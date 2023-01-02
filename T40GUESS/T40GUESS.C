@@ -1,4 +1,7 @@
-/* Kiselev Evgenii, 09-3, 02.01.2023, EK3 */
+/* File Name: T40GUESS.C 
+ * Programmer: EK3
+ * Date: 02.01.2023
+ */
 
 #include <windows.h>
 void main( void )
