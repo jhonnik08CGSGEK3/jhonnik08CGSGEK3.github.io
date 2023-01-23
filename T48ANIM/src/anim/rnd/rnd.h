@@ -46,7 +46,7 @@ extern HDC EK3_hRndGLRC;                 /* OpenGL rendering context handle */
 extern INT EK3_RndFrameW, EK3_RndFrameH; /* Work window size */
 
 
-extern DBL
+extern FLT
   EK3_RndProjSize,    /* Project plane fit square */
   EK3_RndProjDist,    /* Distance to project plane from viewer (near) */
   EK3_RndProjFarClip; /* Distance to project far clip plane (far) */
@@ -70,7 +70,7 @@ VOID EK3_RndEnd( VOID );
 BOOL EK3_RndPrimCreate( ek3PRIM *Pr, INT NoofV, INT NoofI );
 VOID EK3_RndPrimFree( ek3PRIM *Pr );
 VOID EK3_RndPrimDraw( ek3PRIM *Pr, MATR World );
-VOID EK3_RndPrimCreateSphere( ek3PRIM *Pr, DBL R, INT W, INT H );
+VOID EK3_RndPrimCreateSphere( ek3PRIM *Pr, FLT R, INT W, INT H );
 BOOL EK3_RndPrimLoad( ek3PRIM *Pr, CHAR *FileName );
 
 #endif /* __rnd_h_ */

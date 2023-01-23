@@ -13,7 +13,7 @@ struct tagUNIT_CTRL
 {
   UNIT_BASE_FIELDS;
   VEC CamLoc, CamAt;
-  DBL Speed, AngleSpeed;
+  FLT Speed, AngleSpeed;
 };
 
 /* Unit initialization function.

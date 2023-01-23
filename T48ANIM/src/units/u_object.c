@@ -18,8 +18,8 @@ struct tagUNIT_OBJECT
 
 static VOID Init( UNIT_OBJECT *Uni, ek3ANIM *Ani )
 {
-  Uni->Pos = VecSet(5, 2, 2);
-  EK3_RndPrimLoad(&Uni->Object, "bin/objects/helicopter.obj");
+  Uni->Pos = VecSet1(0); /* 5, 2, 2 */
+  EK3_RndPrimLoad(&Uni->Object, "bin/objects/gazelle.obj");
 }
 static VOID Close( UNIT_OBJECT *Uni, ek3ANIM *Ani )
 {

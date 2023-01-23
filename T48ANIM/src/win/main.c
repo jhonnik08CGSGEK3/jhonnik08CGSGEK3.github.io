@@ -29,6 +29,8 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
   HWND hWnd;
   MSG msg;
 
+  SetDbgMemHooks();
+
   wc.style = CS_VREDRAW | CS_HREDRAW;
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
@@ -59,7 +61,9 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
     hInstance,                    /* Instance handle */
     NULL);                        /* Pointer to additional parameters */
 
-  SetDbgMemHooks();
+  EK3_AnimUnitAdd(EK3_UnitCowCreate());
+  EK3_AnimUnitAdd(EK3_UnitCtrlCreate());
+  EK3_AnimUnitAdd(EK3_UnitObjectCreate());
 
   /* Show and redraw window */
   ShowWindow(hWnd, SW_SHOWNORMAL);
@@ -158,9 +162,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     return 0;
   case WM_CREATE:
     EK3_AnimInit(hWnd);
-    EK3_AnimUnitAdd(EK3_UnitCowCreate());
-    EK3_AnimUnitAdd(EK3_UnitCtrlCreate());
-    EK3_AnimUnitAdd(EK3_UnitObjectCreate());
     SetTimer(hWnd, 47, 2, NULL);
     return 0;
   case WM_SIZE:

@@ -14,7 +14,7 @@ HDC EK3_hRndDC;                   /* Work window memory device context */
 HDC EK3_hRndGLRC;                 /* OpenGL rendering context handle */
 INT EK3_RndFrameW, EK3_RndFrameH; /* Work window size */
 
-DBL
+FLT
   EK3_RndProjSize = 0.1,    /* Project plane fit square */
   EK3_RndProjDist = 0.1,    /* Distance to project plane from viewer (near) */
   EK3_RndProjFarClip = 300; /* Distance to project far clip plane (far) */

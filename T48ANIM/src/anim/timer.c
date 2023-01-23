@@ -36,8 +36,8 @@ VOID EK3_AnimTimerResponse( VOID )
 
   QueryPerformanceCounter(&t);
   /* Global time */
-  EK3_Anim.GlobalTime = (DBL)(t.QuadPart - StartTime) / TimePerSec;
-  EK3_Anim.GlobalDeltaTime = (DBL)(t.QuadPart - OldTime) / TimePerSec;
+  EK3_Anim.GlobalTime = (FLT)(t.QuadPart - StartTime) / TimePerSec;
+  EK3_Anim.GlobalDeltaTime = (FLT)(t.QuadPart - OldTime) / TimePerSec;
 
   /* Time with pause */
   if (EK3_Anim.IsPause)
@@ -48,13 +48,13 @@ VOID EK3_AnimTimerResponse( VOID )
   else
   {
     EK3_Anim.DeltaTime = EK3_Anim.GlobalDeltaTime;
-    EK3_Anim.Time = (DBL)(t.QuadPart - PauseTime - StartTime) / TimePerSec;
+    EK3_Anim.Time = (FLT)(t.QuadPart - PauseTime - StartTime) / TimePerSec;
   }
   /* FPS */
   FrameCounter++;
   if (t.QuadPart - OldTimeFPS > TimePerSec)
   {
-    EK3_Anim.FPS = FrameCounter * TimePerSec / (DBL)(t.QuadPart - OldTimeFPS);
+    EK3_Anim.FPS = FrameCounter * TimePerSec / (FLT)(t.QuadPart - OldTimeFPS);
     OldTimeFPS = t.QuadPart;
     FrameCounter = 0;
   }

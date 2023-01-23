@@ -18,15 +18,15 @@ VOID EK3_RndCamSet( VEC Loc, VEC At, VEC Up )
 
 VOID EK3_RndProjSet( VOID )
 {
-  DBL rx, ry;
+  FLT rx, ry;
 
   rx = ry = EK3_RndProjSize;
 
   /* Correct aspect ratio */
   if (EK3_RndFrameW > EK3_RndFrameH)
-    rx *= (DBL)EK3_RndFrameW / EK3_RndFrameH;
+    rx *= (FLT)EK3_RndFrameW / EK3_RndFrameH;
   else
-    ry *= (DBL)EK3_RndFrameH / EK3_RndFrameW;
+    ry *= (FLT)EK3_RndFrameH / EK3_RndFrameW;
 
   EK3_RndMatrProj = MatrFrustrum(-rx / 2, rx / 2, -ry / 2, ry / 2,
                                 EK3_RndProjDist, EK3_RndProjFarClip);

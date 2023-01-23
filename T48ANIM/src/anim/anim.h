@@ -28,7 +28,7 @@ typedef struct tagek3ANIM
   INT NumOfUnits;
 
   /* Timer parameters */
-  DBL
+  FLT
     GlobalTime, GlobalDeltaTime,
     Time, DeltaTime,
     FPS;
@@ -47,7 +47,7 @@ typedef struct tagek3ANIM
   BYTE
     JBut[32], JButOld[32], JButClick[32]; /* Joystick button states */
   INT JPov;                               /* Joystick point-of-view control [-1, 0..7] */
-  DBL JX, JY, JZ, JR;                     /* Joystick axis */
+  FLT JX, JY, JZ, JR;                     /* Joystick axis */
 } ek3ANIM;
 
 struct tagek3UNIT

@@ -43,13 +43,13 @@ VOID EK3_RndPrimDraw( ek3PRIM *Pr, MATR World )
   MATR wvp = MatrMulMatr3(Pr->Trans, World, EK3_RndMatrVP);
 
   /* Build projection */
-  glLoadMatrixd(wvp.A[0]);
+  glLoadMatrixf(wvp.A[0]);
 
   /* Draw triangles */
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glBegin(GL_TRIANGLES);
   for (i = 0; i < Pr->NumOfI; i++)
-    glVertex3dv(&Pr->V[Pr->I[i]].P.X);
+    glVertex3fv(&Pr->V[Pr->I[i]].P.X);
   glEnd();
 }
 
@@ -120,5 +120,39 @@ BOOL EK3_RndPrimLoad( ek3PRIM *Pr, CHAR *FileName )
   fclose(F);
   return TRUE;
 }
+
+/*
+#define BALL_GRID_W 50
+#define BALL_GRID_H 50
+
+VOID EK3_RndPrimCreateSphere( ek3PRIM Pr, FLT R, FLT W, FLT H )
+{
+  FLT theta, phi;
+  INT i, j, k, ind;
+
+  for (i = 0, theta = 0; i < BALL_GRID_H; i++, theta -= PI / (BALL_GRID_H - 1))
+    for (j = 0, phi = 0; j < BALL_GRID_W; j++, phi += 2 * PI / (BALL_GRID_W - 1))
+    {
+      Uni->Ball[i][j].X = R * sin(theta) * sin(phi);
+      Uni->Ball[i][j].Y = R * cos(theta);
+      Uni->Ball[i][j].Z = R * sin(theta) * cos(phi);
+    }
+
+  for (k = 0, ind = 0, i = 0; i < H - 1; i++)
+  {
+    for (j = 0; j < W - 1; j++, ind++)
+    {
+      Pr->I[k++] = ind;
+      Pr->I[k++] = ind + 1;
+      Pr->I[k++] = ind + W;
+
+      Pr->I[k++] = ind + W + 1;
+      Pr->I[k++] = ind + 1;
+      Pr->I[k++] = ind + W;
+    }
+    ind++;
+  }
+}
+*/
 
 /* END OF 'rndprim.c' FILE */
