@@ -1,7 +1,7 @@
 /* FILE NAME: rnddata.c
  * PURPOSE: Variables data.
  * PROGRAMMER: EK3
- * DATE: 18.01.2023
+ * DATE: 10.02.2023
  */
 
 #include <windows.h>
@@ -18,6 +18,8 @@ FLT
   EK3_RndProjSize = 0.1,    /* Project plane fit square */
   EK3_RndProjDist = 0.1,    /* Distance to project plane from viewer (near) */
   EK3_RndProjFarClip = 300; /* Distance to project far clip plane (far) */
+
+VEC EK3_RndCamLoc ;
 
 MATR
   EK3_RndMatrView, /* View coordinate system matrix */

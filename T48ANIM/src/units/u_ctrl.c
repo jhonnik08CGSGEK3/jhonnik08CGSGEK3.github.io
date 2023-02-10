@@ -11,7 +11,7 @@
 typedef struct tagUNIT_CTRL UNIT_CTRL;
 struct tagUNIT_CTRL
 {
-  UNIT_BASE_FIELDS;
+  EK3_UNIT_BASE_FIELDS;
   VEC CamLoc, CamAt;
   FLT Speed, AngleSpeed;
 };
@@ -100,7 +100,7 @@ static VOID EK3_UnitRender( UNIT_CTRL *Uni, ek3ANIM *Ani )
  *   - unit structure size in bytes:
  *       INT Size;
  * RETURNS:
- *   (vg4UNIT *) pointer to created unit.
+ *   (ek3UNIT *) pointer to created unit.
  */
 ek3UNIT * EK3_UnitCtrlCreate( VOID )
 {
@@ -117,6 +117,6 @@ ek3UNIT * EK3_UnitCtrlCreate( VOID )
   Uni->Render = (VOID *)EK3_UnitRender;
 
   return Uni;
-} /* End of 'VG4_AnimUnitCreate' function */
+} /* End of 'EK3_AnimUnitCreate' function */
 
 /* END OF 'unit.c' FILE */

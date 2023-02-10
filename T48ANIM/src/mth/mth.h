@@ -30,6 +30,16 @@ typedef struct tagVEC
   FLT X, Y, Z; /* Vector coordinates */
 } VEC;
 
+typedef struct tagVEC2
+{
+  FLT X, Y;
+} VEC2;
+
+typedef struct tagVEC4
+{
+  FLT X, Y, Z, W;
+} VEC4;
+
 /* Transformation matrix representation type */
 typedef struct tagMATR
 {
@@ -99,6 +109,58 @@ __inline VEC VecSet1( FLT X )
 
   return V;
 } /* End of 'VecSet1' function */
+
+/* New 4D vector setup function.
+ * ARGUMENTS:
+ *  - FLT A, B, C, D - New vector data
+ * RETURNS:
+ *   (VEC4) result vector.
+ */
+__inline VEC4 Vec4Set( FLT A, FLT B, FLT C, FLT D )
+{
+  VEC4 V = {A, B, C, D};
+
+  return V;
+} /* End of 'Vec4Set' function */
+
+/* New 4D vector setup with one component function.
+ * ARGUMENTS:
+ *  - FLT A - New vector data
+ * RETURNS:
+ *   (VEC4) result vector.
+ */
+__inline VEC4 Vec4Set1( FLT A )
+{
+  VEC4 V = {A, A, A, A};
+
+  return V;
+} /* End of 'Vec4Set1' function */
+
+/* New 2D vector setup function.
+ * ARGUMENTS:
+ *  - FLT A, B - New vector data
+ * RETURNS:
+ *   (VEC4) result vector.
+ */
+__inline VEC2 Vec2Set( FLT A, FLT B )
+{
+  VEC2 V = {A, B};
+
+  return V;
+} /* End of 'Vec4Set' function */
+
+/* New 2D vector setup with one component function.
+ * ARGUMENTS:
+ *  - FLT A - New vector data
+ * RETURNS:
+ *   (VEC4) result vector.
+ */
+__inline VEC2 Vec2Set1( FLT A )
+{
+  VEC2 V = {A, A};
+
+  return V;
+} /* End of 'Vec4Set1' function */
 
 /* Add two vectors function.
  * ARGUMENTS:

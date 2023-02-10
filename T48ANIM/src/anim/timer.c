@@ -1,6 +1,6 @@
 /* FILE NAME   : timer.c
  * PROGRAMMER  : EK3
- * LAST UPDATE : 18.01.2023
+ * LAST UPDATE : 10.02.2023
  * PURPOSE     : Timer functions.
  */
 
@@ -16,6 +16,12 @@ static UINT64
   TimePerSec,   /* Timer resolution */
   FrameCounter; /* Frames counter */
 
+/* Timer intitialization function.
+ * ARGUMENTS:
+ *   None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_AnimTimerInit( VOID )
 {
   LARGE_INTEGER t;
@@ -28,8 +34,14 @@ VOID EK3_AnimTimerInit( VOID )
   EK3_Anim.IsPause = FALSE;
   EK3_Anim.FPS = 30.0;
   PauseTime = 0;
-}
+} /* End of 'EK3_AnimTimerInit' function */
 
+/* Timer response function.
+ * ARGUMENTS:
+ *   None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_AnimTimerResponse( VOID )
 {
   LARGE_INTEGER t;
@@ -59,6 +71,6 @@ VOID EK3_AnimTimerResponse( VOID )
     FrameCounter = 0;
   }
   OldTime = t.QuadPart;
-}
+} /* End of 'EK3_AnimTimerResponse' function */
 
 /* END OF 'timer.c' FILE */

@@ -59,7 +59,7 @@ static VOID EK3_UnitRender( ek3UNIT *Uni, ek3ANIM *Ani )
  *   - unit structure size in bytes:
  *       INT Size;
  * RETURNS:
- *   (vg4UNIT *) pointer to created unit.
+ *   (ek3UNIT *) pointer to created unit.
  */
 ek3UNIT * EK3_AnimUnitCreate( INT Size )
 {
@@ -76,6 +76,6 @@ ek3UNIT * EK3_AnimUnitCreate( INT Size )
   Uni->Render = EK3_UnitRender;
 
   return Uni;
-} /* End of 'VG4_AnimUnitCreate' function */
+} /* End of 'EK3_AnimUnitCreate' function */
 
 /* END OF 'unit.c' FILE */

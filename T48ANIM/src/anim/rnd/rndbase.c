@@ -1,21 +1,34 @@
-/* FILE NAME: rnd.h
- * PURPOSE: Function headers.
+/* FILE NAME: rndbase.c
+ * PURPOSE: render base functions.
  * PROGRAMMER: EK3
- * DATE: 18.01.2023
+ * DATE: 10.02.2023
  */
 
 #include <windows.h>
 
 #include "anim/rnd/rnd.h"
+#include "anim/rnd/res/rndres.h"
+#include "anim/anim.h"
 
-#pragma comment(lib, "opengl32")
-
+/* View and ViewProj matrixes initialization function.
+ * ARGUMENTS:
+ *  - VEC Loc, At, Up - camera vectors.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndCamSet( VEC Loc, VEC At, VEC Up )
 {
   EK3_RndMatrView = MatrView(Loc, At, Up);
   EK3_RndMatrVP = MatrMulMatr(EK3_RndMatrView, EK3_RndMatrProj);
-}
+  EK3_RndCamLoc = Loc;
+} /* End of 'EK3_RndCamSet' function */
 
+/* Change projection size function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndProjSet( VOID )
 {
   FLT rx, ry;
@@ -31,8 +44,14 @@ VOID EK3_RndProjSet( VOID )
   EK3_RndMatrProj = MatrFrustrum(-rx / 2, rx / 2, -ry / 2, ry / 2,
                                 EK3_RndProjDist, EK3_RndProjFarClip);
   EK3_RndMatrVP = MatrMulMatr(EK3_RndMatrView, EK3_RndMatrProj);
-}
+} /* End of 'EK3_RndProjSet' function */
 
+/* Render initialization function.
+ * ARGUMENTS:
+ *  - HWND hWnd - window handle.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndInit( HWND hWnd )
 {
   INT i;
@@ -57,9 +76,17 @@ VOID EK3_RndInit( HWND hWnd )
   EK3_hRndGLRC = wglCreateContext(EK3_hRndDC);
   wglMakeCurrent(EK3_hRndDC, EK3_hRndGLRC);
 
+  if (glewInit() != GLEW_OK)
+    exit(0);
+
   /* Render parameters setup */
   glClearColor(0.28, 0.47, 0.8, 1);
   glEnable(GL_DEPTH_TEST);
+
+  glEnable(GL_PRIMITIVE_RESTART);
+  glPrimitiveRestartIndex(-1);
+
+  EK3_RndResInit();
 
   EK3_RndProjDist = EK3_RndProjSize = 0.1;
   EK3_RndProjFarClip = 300;
@@ -67,15 +94,28 @@ VOID EK3_RndInit( HWND hWnd )
   EK3_RndFrameW = 30;
   EK3_RndFrameH = 30;
   EK3_RndCamSet(VecSet(13, 25, 18), VecSet1(0), VecSet(0, 1, 0));
-}
+} /* End of 'EK3_RndInit' function */
 
+/* Render deinitialization function.
+ * ARGUMENTS:
+ *   None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndClose( VOID )
 {
+  EK3_RndResClose();
   wglMakeCurrent(NULL, NULL);
   wglDeleteContext(EK3_hRndDC);
   ReleaseDC(EK3_hRndWnd, EK3_hRndDC);
-}
+} /* End of 'EK3_RndClose' function */
 
+/* Render resize function.
+ * ARGUMENTS:
+ *   - INT W, H - new screen size.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndResize( INT W, INT H )
 {
   glViewport(0, 0, W, H);
@@ -86,24 +126,45 @@ VOID EK3_RndResize( INT W, INT H )
 
   /* Counting projection */
   EK3_RndProjSet();
-}
+} /* End of 'EK3_RndResize' function */
 
+/* Render copy frame function.
+ * ARGUMENTS:
+ *   None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndCopyFrame( VOID )
 {
   SwapBuffers(EK3_hRndDC);
-}
+} /* End of 'EK3_RndCopyFrame' function */
 
+/* Render start draw function.
+ * ARGUMENTS:
+ *   None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndStart( VOID )
 {
+  static DBL ReloadTime = 0;
+
   /* Clear frame */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* Set defaults */
-}
 
+} /* End of 'EK3_RndStart' function */
+
+/* Render draw end function.
+ * ARGUMENTS:
+ *   None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndEnd( VOID )
 {
   glFinish();
-}
+} /* End of 'EK3_RndEnd' function */
 
-/* END OF 'rnd.h' FILE */
+/* END OF 'rndbase.c' FILE */

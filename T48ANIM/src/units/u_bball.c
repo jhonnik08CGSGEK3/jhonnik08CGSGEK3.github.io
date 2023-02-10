@@ -11,7 +11,7 @@
 typedef struct tagUNIT_BALL UNIT_BALL;
 struct tagUNIT_BALL
 {
-  UNIT_BASE_FIELDS;
+  EK3_UNIT_BASE_FIELDS;
   VEC Pos;
   VEC Ball[BALL_GRID_H][BALL_GRID_W];
   POINT pnts[BALL_GRID_H][BALL_GRID_W];

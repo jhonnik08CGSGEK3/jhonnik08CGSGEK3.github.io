@@ -9,7 +9,7 @@
 
 #include "rnd/rnd.h"
 
-#define UNIT_BASE_FIELDS \
+#define EK3_UNIT_BASE_FIELDS \
   VOID (*Init)( ek3UNIT *Uni, ek3ANIM *Ani );     \
   VOID (*Close)( ek3UNIT *Uni, ek3ANIM *Ani );    \
   VOID (*Response)( ek3UNIT *Uni, ek3ANIM *Ani ); \
@@ -52,7 +52,7 @@ typedef struct tagek3ANIM
 
 struct tagek3UNIT
 {
-  UNIT_BASE_FIELDS;
+  EK3_UNIT_BASE_FIELDS;
 };
 
 extern ek3ANIM EK3_Anim;
@@ -65,7 +65,7 @@ VOID EK3_AnimResize( INT W, INT H );
 VOID EK3_AnimCopyFrame( VOID );
 VOID EK3_AnimRender( VOID );
 VOID EK3_AnimUnitAdd( ek3UNIT *Uni );
-VOID EK3_AnimFlipFullScreen( VOID );
+VOID EK3_AnimFlipFullScreen( HWND hWnd );
 VOID EK3_AnimExit( VOID );
 
 /* Timer funcs */

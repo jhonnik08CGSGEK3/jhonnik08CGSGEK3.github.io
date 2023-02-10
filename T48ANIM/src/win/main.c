@@ -11,7 +11,6 @@
 /* Link to processing function */
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
                                WPARAM wParam, LPARAM lParam );
-VOID FlipFullScreen( HWND hWnd );
 
 /* The main program function.
  * ARGUMENTS: 
@@ -61,10 +60,6 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
     hInstance,                    /* Instance handle */
     NULL);                        /* Pointer to additional parameters */
 
-  EK3_AnimUnitAdd(EK3_UnitCowCreate());
-  EK3_AnimUnitAdd(EK3_UnitCtrlCreate());
-  EK3_AnimUnitAdd(EK3_UnitObjectCreate());
-
   /* Show and redraw window */
   ShowWindow(hWnd, SW_SHOWNORMAL);
   UpdateWindow(hWnd);
@@ -79,61 +74,14 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
       DispatchMessage(&msg);
     }
     else
-      SendMessage(hWnd, WM_TIMER, 47, 0);
+    {
+      EK3_AnimRender();
+      EK3_AnimCopyFrame();
+    }
   }
 
   return msg.wParam;
 } /* End of 'WinMain' function */
-
-/* Flip full screen function.
- * ARGUMENTS:
- *   - window handle:
- *       HWND hWnd;
- * RETURNS: None.
- */
-VOID FlipFullScreen( HWND hWnd )
-{
-  static BOOL IsFullScreen = FALSE; /* store current mode */
-  static RECT SaveRC;               /* save old window size */
-
-  if (!IsFullScreen)
-  {
-    HMONITOR hMon;
-    MONITORINFOEX moninfo;
-    RECT rc;
-
-    IsFullScreen = TRUE;
-
-    /* Save old window size and position */
-    GetWindowRect(hWnd, &SaveRC);
-
-    /* Get closest monitor */
-    hMon = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-    moninfo.cbSize = sizeof(moninfo);
-    GetMonitorInfo(hMon, (MONITORINFO *)&moninfo);
-
-    rc = moninfo.rcMonitor;
-    AdjustWindowRect(&rc, GetWindowLong(hWnd, GWL_STYLE), FALSE);
-
-
-    /* Restore window size and position */
-    SetWindowPos(hWnd, HWND_TOP,
-      rc.left, rc.top,
-      rc.right - rc.left, rc.bottom - rc.top,
-      SWP_NOOWNERZORDER);
-  }
-  else
-  {
-    IsFullScreen = FALSE;
-
-    /* Restore window size and position */
-    SetWindowPos(hWnd, HWND_NOTOPMOST,
-      SaveRC.left, SaveRC.top,
-      SaveRC.right - SaveRC.left, SaveRC.bottom - SaveRC.top,
-      SWP_NOOWNERZORDER);
-  }
-
-} /* End of 'FlipFullScreen' function */
 
 /* Window message processing function.
  * ARGUMENTS: 
@@ -149,7 +97,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
 {
   HDC hDC;
   PAINTSTRUCT ps;
-  static ek3PRIM Pr, PrSphere;
   MINMAXINFO *minmax;
 
   switch (Msg)
@@ -162,6 +109,10 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
     return 0;
   case WM_CREATE:
     EK3_AnimInit(hWnd);
+    EK3_AnimUnitAdd(EK3_UnitCowCreate());
+    EK3_AnimUnitAdd(EK3_UnitCtrlCreate());
+    EK3_AnimUnitAdd(EK3_UnitObjectCreate());
+    EK3_AnimUnitAdd(EK3_UnitGridCreate());
     SetTimer(hWnd, 47, 2, NULL);
     return 0;
   case WM_SIZE:
@@ -171,6 +122,10 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
   case WM_KEYDOWN:
     if (wParam == 'p')
       EK3_Anim.IsPause = !EK3_Anim.IsPause;
+    else if (wParam == 27)
+      SendMessage(hWnd, WM_DESTROY, 0, 0);
+    else if (wParam == 122)
+      EK3_AnimFlipFullScreen(hWnd);
     return 0;
   case WM_MOUSEWHEEL:
     EK3_MouseWheel += (SHORT)HIWORD(wParam);

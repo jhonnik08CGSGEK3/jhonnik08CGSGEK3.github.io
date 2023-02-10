@@ -11,7 +11,7 @@
 typedef struct tagUNIT_COW UNIT_COW;
 struct tagUNIT_COW
 {
-  UNIT_BASE_FIELDS;
+  EK3_UNIT_BASE_FIELDS;
   VEC Pos;
   ek3PRIM Cow;
 };
@@ -38,6 +38,16 @@ static VOID Render( UNIT_COW *Uni, ek3ANIM *Ani )
 }
 static VOID Response( UNIT_COW *Uni, ek3ANIM *Ani )
 {
+  if (Ani->Keys[VK_SHIFT] && Ani->KeysClick['W'])
+  {
+    INT modes[2];
+
+    glGetIntegerv(GL_POLYGON_MODE, modes);
+    if (modes[0] == GL_LINE)
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    else
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
 }
 
 ek3UNIT * EK3_UnitCowCreate( VOID )

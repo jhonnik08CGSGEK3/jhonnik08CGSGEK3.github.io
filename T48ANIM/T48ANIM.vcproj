@@ -183,22 +183,6 @@
 				DeploymentContent="true"
 				>
 			</File>
-			<File
-				RelativePath=".\src\anim\input.c"
-				>
-			</File>
-			<File
-				RelativePath=".\src\anim\timer.c"
-				>
-			</File>
-			<File
-				RelativePath=".\src\units\u_bball.c"
-				>
-			</File>
-			<File
-				RelativePath=".\src\units\u_object.c"
-				>
-			</File>
 			<Filter
 				Name="Math Support"
 				>
@@ -219,12 +203,24 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\anim\input.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\anim\timer.c"
+					>
+				</File>
+				<File
 					RelativePath=".\src\anim\unit.c"
 					>
 				</File>
 				<Filter
 					Name="Rendering System"
 					>
+					<File
+						RelativePath=".\src\anim\rnd\glew.c"
+						>
+					</File>
 					<File
 						RelativePath=".\src\anim\rnd\rnd.h"
 						>
@@ -238,9 +234,37 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\anim\rnd\rndgrid.c"
+						>
+					</File>
+					<File
 						RelativePath=".\src\anim\rnd\rndprim.c"
 						>
 					</File>
+					<Filter
+						Name="Resources System"
+						>
+						<File
+							RelativePath=".\src\anim\rnd\res\rndmtl.c"
+							>
+						</File>
+						<File
+							RelativePath=".\src\anim\rnd\res\rndres.c"
+							>
+						</File>
+						<File
+							RelativePath=".\src\anim\rnd\res\rndres.h"
+							>
+						</File>
+						<File
+							RelativePath=".\src\anim\rnd\res\rndshd.c"
+							>
+						</File>
+						<File
+							RelativePath=".\src\anim\rnd\res\rndtex.c"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -255,11 +279,23 @@
 				Name="Units"
 				>
 				<File
+					RelativePath=".\src\units\u_bball.c"
+					>
+				</File>
+				<File
 					RelativePath=".\src\units\u_cow.c"
 					>
 				</File>
 				<File
 					RelativePath=".\src\units\u_ctrl.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_land.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_object.c"
 					>
 				</File>
 				<File
