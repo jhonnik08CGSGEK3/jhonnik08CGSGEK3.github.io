@@ -11,7 +11,7 @@
 
 HWND EK3_hRndWnd;                 /* Work window handle */
 HDC EK3_hRndDC;                   /* Work window memory device context */
-HDC EK3_hRndGLRC;                 /* OpenGL rendering context handle */
+HGLRC EK3_hRndGLRC;                 /* OpenGL rendering context handle */
 INT EK3_RndFrameW, EK3_RndFrameH; /* Work window size */
 
 FLT

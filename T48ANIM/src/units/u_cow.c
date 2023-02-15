@@ -18,7 +18,7 @@ struct tagUNIT_COW
 
 static VOID Init( UNIT_COW *Uni, ek3ANIM *Ani )
 {
-  Uni->Pos = VecSet(0, -8, 3);
+  Uni->Pos = VecSet(5, -8, 3);
   EK3_RndPrimLoad(&Uni->Cow, "bin/objects/cow.obj");
 }
 static VOID Close( UNIT_COW *Uni, ek3ANIM *Ani )

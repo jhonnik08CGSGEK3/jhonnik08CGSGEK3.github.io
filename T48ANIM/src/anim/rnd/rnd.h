@@ -15,7 +15,7 @@
 
 #pragma comment(lib, "opengl32")
 
-#include "def.h"
+#include "res/rndres.h"
 
 typedef struct tagek3VERTEX
 {
@@ -55,7 +55,7 @@ typedef struct tagek3GRID
 
 extern HWND EK3_hRndWnd;                 /* Work window handle */
 extern HDC EK3_hRndDC;                   /* Work window memory device context */
-extern HDC EK3_hRndGLRC;                 /* OpenGL rendering context handle */
+extern HGLRC EK3_hRndGLRC;                 /* OpenGL rendering context handle */
 extern INT EK3_RndFrameW, EK3_RndFrameH; /* Work window size */
 
 
@@ -93,6 +93,9 @@ BOOL EK3_RndGridCreate( ek3GRID *G, INT W, INT H, ek3VERTEX *V );
 VOID EK3_RndGridFree( ek3GRID *G );
 VOID EK3_RndGridAutoNormals( ek3VERTEX *V, INT W, INT H );
 VOID EK3_RndPrimFromGrid( ek3PRIM *Pr, ek3GRID *G );
+
+VOID APIENTRY glDebugOutput( UINT Source, UINT Type, UINT Id, UINT Severity,
+                             INT Length, const CHAR *Message, const VOID *UserParam );
 
 #endif /* __rnd_h_ */
 

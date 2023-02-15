@@ -13,6 +13,39 @@
 #include "anim/rnd/res/rndres.h"
 #include "anim/anim.h"
 
+/* Primitive normals evaluation function.
+ * ARGUMENTS:
+ *   - ek3VERTEX *V - vertex array struct.
+ *   - INT NoofV - vertex array size.
+ *   - INT *I - index array.
+ *   - INT NoofI - index array size.
+ * RETURNS:
+ *   None.
+ */
+VOID EK3_RndPrimEvalNormals( ek3VERTEX *V, INT NoofV, INT *Ind, INT NoofI )
+{
+  INT i;
+
+  for (i = 0; i < NoofV; i++)
+    V[i].N = VecSet(0, 0, 0);
+
+  for (i = 0; i < NoofI; i += 3)
+  {
+    VEC
+      p0 = V[Ind[i]].P,
+      p1 = V[Ind[i + 1]].P,
+      p2 = V[Ind[i + 2]].P,
+      N = VecNormalize(VecCrossVec(VecSubVec(p1, p0), VecSubVec(p2, p0)));
+
+    V[Ind[i]].N = VecAddVec(V[Ind[i]].N, N);
+    V[Ind[i + 1]].N = VecAddVec(V[Ind[i + 1]].N, N);
+    V[Ind[i + 2]].N = VecAddVec(V[Ind[i + 2]].N, N);
+  }
+
+  for (i = 0; i < NoofV; i++)
+    V[i].N = VecNormalize(V[i].N);
+} /* End of 'EK3_RndPrimEvalNormals' function */
+
 /* Primitive creation function.
  * ARGUMENTS:
  *   - ek3PRIM *Pr - primitive struct.
@@ -111,7 +144,6 @@ VOID EK3_RndPrimDraw( ek3PRIM *Pr, MATR World )
     glUniformMatrix4fv(loc, 1, FALSE, winv.A[0]);
   if ((loc = glGetUniformLocation(ProgId, "CamLoc")) != -1)
     glUniform3fv(loc, 1, &EK3_RndCamLoc.X);
-  glUseProgram(0);
 
   /* Build projection */
   glLoadMatrixf(wvp.A[0]);
@@ -122,7 +154,7 @@ VOID EK3_RndPrimDraw( ek3PRIM *Pr, MATR World )
     glDrawArrays(gl_prim_type, 0, Pr->NumOfElements);
   else
   {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Pr->IBuf),
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Pr->IBuf);
     glDrawElements(gl_prim_type, Pr->NumOfElements, GL_UNSIGNED_INT, NULL);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
   }
@@ -210,6 +242,7 @@ BOOL EK3_RndPrimLoad( ek3PRIM *Pr, CHAR *FileName )
     return FALSE;
   }
 
+  EK3_RndPrimEvalNormals(V, nvold, I, nfold * 3);
   free(I);
   free(V);
   fclose(F);

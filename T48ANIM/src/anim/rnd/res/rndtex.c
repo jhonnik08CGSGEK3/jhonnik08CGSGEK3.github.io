@@ -5,7 +5,8 @@
  */
 
 #include <stdio.h>
-#include "anim/rnd/res/rndres.h"
+
+#include "anim/rnd/rnd.h"
 
 ek3TEXTURE EK3_RndTextures[EK3_MAX_TEXTURES];
 INT EK3_RndTexturesSize;
@@ -94,8 +95,7 @@ INT EK3_RndTextureAddFromFileG24( CHAR *FileName, CHAR *Name )
   }
   else
     return -1;
-  EK3_RndTexturesSize++;
-  return EK3_RndTextures[EK3_RndTexturesSize].TexId;
+  return EK3_RndTexturesSize++;
 } /* End of 'EK3_RndTextureAddFromFileG24' function */
 
 /* Texture initialization function.

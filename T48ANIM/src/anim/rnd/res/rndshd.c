@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 
-#include "anim/rnd/res/rndres.h"
+#include "anim/rnd/rnd.h"
 
 /* Shaders stock */
 ek3SHADER EK3_RndShaders[EK3_MAX_SHADERS]; /* Array of shaders */
@@ -73,7 +73,7 @@ static VOID EK3_RndShdLog( CHAR *FileNamePrefix, CHAR *Part, CHAR *Text )
  * RETURNS:
  *   (INT) shader program index (0 if error is occured).
  */
-INT EK3_RndShdLoad( CHAR *FileNamePrefix )
+static INT EK3_RndShdLoad( CHAR *FileNamePrefix )
 {
   INT i, prg = 0, res;
   CHAR *txt;
@@ -179,7 +179,7 @@ INT EK3_RndShdLoad( CHAR *FileNamePrefix )
  *       INT Prg;
  * RETURNS: None.
  */
-VOID EK3_RndShdFree( INT Prg )
+static VOID EK3_RndShdFree( INT Prg )
 {
   INT shds[5] = {0}, n, i;
 
@@ -235,6 +235,13 @@ INT EK3_RndShdAdd( CHAR *ShaderFileNamePrefix )
   if (EK3_RndShadersSize >= EK3_MAX_SHADERS)
     return 0;
 
+  /* Look for existing shader */
+  /*
+  for (i = 0; i < EK3_RndShadersSize; i++)
+    if (strcmp(EK3_RndShaders[i].Name == ShaderFileNamePrefix) == 0)
+      return i;
+  */
+  /* Add shader in array */
   strncpy(EK3_RndShaders[EK3_RndShadersSize].Name, ShaderFileNamePrefix, EK3_STR_MAX - 1);
   EK3_RndShaders[EK3_RndShadersSize].ProgId = EK3_RndShdLoad(ShaderFileNamePrefix);
 

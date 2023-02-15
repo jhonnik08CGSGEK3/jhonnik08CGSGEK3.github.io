@@ -4,7 +4,6 @@
  * DATE: 10.02.2023
  */
 
-#include "anim/rnd/res/rndres.h"
 #include "anim/anim.h"
 
 ek3MATERIAL EK3_RndMaterials[EK3_MAX_MATERIALS]; /* Array of materials */

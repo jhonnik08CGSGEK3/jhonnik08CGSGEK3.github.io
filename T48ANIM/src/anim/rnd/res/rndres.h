@@ -7,7 +7,7 @@
 #ifndef __rndres_h_
 #define __rndres_h_
 
-#include "anim/rnd/rnd.h"
+#include "def.h"
 
 #define EK3_STR_MAX 300
 #define EK3_MAX_SHADERS 30
@@ -45,28 +45,115 @@ typedef struct tagek3MATERIAL
   INT ShdNo;
 } ek3MATERIAL;
 
-/* Shader functions headers */
-static CHAR * EK3_RndShdLoadTextFromFile( CHAR *FileName );
-static VOID EK3_RndShdLog( CHAR *FileNamePrefix, CHAR *Part, CHAR *Text );
+/***
+  Shaders handle functions
+***/
 
-INT EK3_RndShdLoad( CHAR *FileNamePrefix );
-VOID EK3_RndShdFree( INT Prg );
-
+/* Shader initialization function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndShdInit( VOID );
+
+/* Shader deinitialization function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndShdClose( VOID );
+
+/* Add shader to shader array function.
+ * ARGUMENTS:
+ *  - CHAR *ShaderFileNamePrefix - name of folder to add shaders from.
+ * RETURNS:
+ *   (INT) - array of shaders size.
+ */
 INT EK3_RndShdAdd( CHAR *ShaderFileNamePrefix );
+
+/* Shader update function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndShdUpdate( VOID );
 
-/* Texture functions headers */
+/***
+  Textures handle functions
+***/
+
+/* Add texture image to texture array function.
+ * ARGUMENTS:
+ *  - CHAR *Name - texture name.
+ *  - INT W, H - texture size.
+ *  - VOID *Bits - image.
+ * RETURNS:
+ *   (INT) - array size, -1 if array is full.
+ */
 INT EK3_RndTextureAddImg( CHAR *Name, INT W, INT H, VOID *ImageData );
+
+/* Add texture to texture array from .G24 file function.
+ * ARGUMENTS:
+ *  - CHAR *FileName - texture file name.
+ *  - CHAR *Name - texture name.
+ * RETURNS:
+ *   (INT) - array size, -1 if program didnt work.
+ */
 INT EK3_RndTextureAddFromFileG24( CHAR *FileName, CHAR *Name );
+
+/* Texture initialization function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndTexInit( VOID );
+
+/* Texture deinitialization function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndTexClose( VOID );
 
-/* Material functions headers */
+/***
+  Materials handle functions
+***/
+
+/* Material applying function.
+ * ARGUMENTS:
+ *  - MtlNo - Material array position.
+ * RETURNS:
+ *   (UINT) - programm ID.
+ */
 UINT EK3_RndMtlApply( INT MtlNo );
+
+/* Material initialization function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndMtlInit( VOID );
+
+/* Material initialization function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   None.
+ */
 VOID EK3_RndMtlClose( VOID );
+
+/* Material adding in array function.
+ * ARGUMENTS:
+ *  - ek3MATERIAL Mtl - material struct to add in array.
+ * RETURNS:
+ *   (INT) - array of materials size.
+ */
 INT EK3_RndMtlAdd( ek3MATERIAL Mtl );
 
 /* Resources function headers */

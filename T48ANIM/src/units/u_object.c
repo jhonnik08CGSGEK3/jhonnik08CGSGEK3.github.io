@@ -1,6 +1,6 @@
 /* FILE NAME   : u_heli.c
  * PROGRAMMER  : EK3
- * LAST UPDATE : 20.01.2023
+ * LAST UPDATE : 13.02.2023
  * PURPOSE     : Cow unit functions.
  */
 
@@ -15,7 +15,7 @@ struct tagUNIT_OBJECT
   EK3_UNIT_BASE_FIELDS;
   VEC Pos;
   ek3PRIM Object;
-  INT TexId;
+  INT TexNo;
 };
 
 static VOID Init( UNIT_OBJECT *Uni, ek3ANIM *Ani )
@@ -26,17 +26,11 @@ static VOID Init( UNIT_OBJECT *Uni, ek3ANIM *Ani )
     0, {0},
     "", 0
   };
-  DWORD checker[] =
-  {
-    0xFFFF0000, 0xFFFFFFFF,
-    0xFFFFFFFF, 0xFF00FF00
-  };
 
   Uni->Pos = VecSet(5, 2, 2);
   EK3_RndPrimLoad(&Uni->Object, "bin/objects/helicopter.obj");
-  //Uni->TexId = EK3_RndTextureAddFromFileG24("bin/pictures/M.G24", "object");
+  Uni->TexNo = mtl.Tex[0] = EK3_RndTextureAddFromFileG24("bin/pictures/M.G24", "object");
 
-  mtl.Tex[0] = EK3_RndTextureAddImg("checker", 2, 2, checker);
   Uni->Object.MtlNo = EK3_RndMtlAdd(mtl);
 }
 static VOID Close( UNIT_OBJECT *Uni, ek3ANIM *Ani )
