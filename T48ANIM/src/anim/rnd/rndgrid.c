@@ -23,6 +23,7 @@ BOOL EK3_RndGridCreate( ek3GRID *G, INT W, INT H, ek3VERTEX *V )
     return FALSE;
 
   memcpy(G->V, V, W * H * sizeof(ek3VERTEX));
+
   return TRUE;
 }
 

@@ -29,8 +29,8 @@ static VOID EK3_UnitInit( UNIT_CTRL *Uni, ek3ANIM *Ani )
   Uni->CamLoc = VecSet1(8);
   Uni->CamAt = VecSet1(0);
   EK3_RndCamSet(Uni->CamLoc, Uni->CamAt, VecSet(0, 1, 0));
-  Uni->Speed = 5;
-  Uni->AngleSpeed = -10;
+  Uni->Speed = 3;
+  Uni->AngleSpeed = -7;
 } /* End of 'EK3_UnitInit' function */
 
 /* Unit deinitialization function.
@@ -59,11 +59,14 @@ static VOID EK3_UnitResponse( UNIT_CTRL *Uni, ek3ANIM *Ani )
   {
     Uni->CamLoc = VecAddVec(Uni->CamLoc, VecMulNum(Uni->CamLoc,
       Ani->GlobalDeltaTime * -0.05 * Ani->Mdz));
+
     Uni->CamLoc = PointTransform(Uni->CamLoc,
-      MatrMulMatr(MatrRotateY(Ani->DeltaTime * Uni->AngleSpeed * Ani->Mdx +
-        Uni->Speed * (EK3_Anim.Keys[VK_RIGHT] - EK3_Anim.Keys[VK_LEFT])),
-                  MatrRotateX(Ani->DeltaTime * Uni->AngleSpeed * Ani->Mdy +
-        Uni->Speed * (EK3_Anim.Keys[VK_UP] - EK3_Anim.Keys[VK_DOWN]))));
+      MatrRotateY(Ani->DeltaTime * Uni->AngleSpeed * Ani->Mdx +
+        Uni->Speed * (EK3_Anim.Keys[VK_RIGHT] - EK3_Anim.Keys[VK_LEFT])));
+
+    Uni->CamLoc = PointTransform(Uni->CamLoc,
+      MatrRotateZ(Ani->DeltaTime * Uni->AngleSpeed * Ani->Mdy +
+        Uni->Speed * (EK3_Anim.Keys[VK_UP] - EK3_Anim.Keys[VK_DOWN])));
     /*
     Uni->CamLoc = PointTransform(Uni->CamLoc, MatrTranslate(
       VecSet(Ani->DeltaTime * Uni->Speed * (EK3_Anim.Keys[VK_RIGHT] - EK3_Anim.Keys[VK_LEFT]),

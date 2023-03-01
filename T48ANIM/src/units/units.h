@@ -14,6 +14,7 @@ ek3UNIT * EK3_UnitCowCreate( VOID );
 ek3UNIT * EK3_UnitCtrlCreate( VOID );
 ek3UNIT * EK3_UnitObjectCreate( VOID );
 ek3UNIT * EK3_UnitGridCreate( VOID );
+ek3UNIT * EK3_UnitMarkerCreate( VOID );
 
 #endif /* __units_h_ */
 

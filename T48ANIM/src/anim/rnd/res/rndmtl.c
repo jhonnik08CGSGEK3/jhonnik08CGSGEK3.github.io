@@ -43,7 +43,7 @@ UINT EK3_RndMtlApply( INT MtlNo )
   ek3MATERIAL *mtl;
 
   /* Set material pointer */
-  if (MtlNo < 0 || MtlNo >= EK3_RndMaterialsSize)
+  if (MtlNo < 0 || MtlNo > EK3_RndMaterialsSize)
     MtlNo = 0;
   mtl = &EK3_RndMaterials[MtlNo];
 
@@ -71,6 +71,7 @@ UINT EK3_RndMtlApply( INT MtlNo )
     glUniform1f(loc, mtl->Ph);
   if ((loc = glGetUniformLocation(prg, "Trans")) != -1)
     glUniform1f(loc, mtl->Trans);
+
   /* Set textures */
   for (i = 0; i < 8; i++)
   {
@@ -101,7 +102,7 @@ VOID EK3_RndMtlInit( VOID )
   mtl = EK3_RndMtlGetDef();
 
   EK3_RndMaterialsSize = 0;
-  EK3_RndMtlAdd(mtl);
+  EK3_RndMtlAdd(&mtl);
 } /* End of 'EK3_RndMtlInit' function */
 
 /* Material initialization function.
@@ -121,14 +122,28 @@ VOID EK3_RndMtlClose( VOID )
  * RETURNS:
  *   (INT) - array of materials size.
  */
-INT EK3_RndMtlAdd( ek3MATERIAL Mtl )
+INT EK3_RndMtlAdd( ek3MATERIAL *Mtl )
 {
   if (EK3_RndMaterialsSize >= EK3_MAX_MATERIALS)
     return 0;
 
-  EK3_RndMaterials[EK3_RndMaterialsSize] = Mtl;
+  EK3_RndMaterials[EK3_RndMaterialsSize] = *Mtl;
 
   return EK3_RndMaterialsSize++;
 } /* End of 'EK3_RndMtlAdd' function */
+
+/* Material getting from array function.
+ * ARGUMENTS:
+ *  - INT MtlNo - material number in array
+ * RETURNS:
+ *   (ek3MATERIAL) - material struct.
+ */
+ek3MATERIAL EK3_RndMtlGet( INT MtlNo )
+{
+  if (MtlNo < 0 || MtlNo >= EK3_RndMaterialsSize)
+    return EK3_RndMtlGetDef();
+
+  return EK3_RndMaterials[MtlNo];
+} /* End of 'EK3_RndMtlGet' function */
 
 /* END OF 'rndmtl.c' FILE */

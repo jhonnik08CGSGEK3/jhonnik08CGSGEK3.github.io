@@ -11,16 +11,23 @@
 ek3TEXTURE EK3_RndTextures[EK3_MAX_TEXTURES];
 INT EK3_RndTexturesSize;
 
-/* Add texture image to texture array function.
+/* Add texture from file stock function.
  * ARGUMENTS:
- *  - CHAR *Name - texture name.
- *  - INT W, H - texture size.
- *  - VOID *Bits - image.
+ *   - Texture name:
+ *       CHAR *FileName;
+ *   - Image size:
+ *       INT W, H;
+ *   - Bytes per pixel:
+ *       INT C;
+ *   - Image data:
+ *       VOID *Bits;
  * RETURNS:
- *   (INT) - array size, -1 if array is full.
+ *   (INT) Texture stock number (0 if error is occured).
  */
-INT EK3_RndTextureAddImg( CHAR *Name, INT W, INT H, VOID *Bits )
+INT EK3_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits )
 {
+  INT mips;
+
   if (EK3_RndTexturesSize >= EK3_MAX_TEXTURES)
     return -1;
 
@@ -28,75 +35,79 @@ INT EK3_RndTextureAddImg( CHAR *Name, INT W, INT H, VOID *Bits )
   glGenTextures(1, &EK3_RndTextures[EK3_RndTexturesSize].TexId);
   glBindTexture(GL_TEXTURE_2D, EK3_RndTextures[EK3_RndTexturesSize].TexId);
 
-  /* Upload texture */
+  mips = log(W > H ? W : H) / log(2);
+  mips = mips < 1 ? 1 : mips;
+
+  glTexStorage2D(GL_TEXTURE_2D, mips, C == 4 ? GL_RGBA8 : C == 3 ? GL_RGB8 : GL_R8, W, H);
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, W, H, C == 4 ? GL_BGRA : C == 3 ? GL_BGR : GL_LUMINANCE, GL_UNSIGNED_BYTE, Bits);
+
   glGenerateMipmap(GL_TEXTURE_2D);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  /* Upload texture */
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+  /* Add to stock */
   strncpy(EK3_RndTextures[EK3_RndTexturesSize].Name, Name, EK3_STR_MAX - 1);
   EK3_RndTextures[EK3_RndTexturesSize].W = W;
   EK3_RndTextures[EK3_RndTexturesSize].H = H;
 
   glBindTexture(GL_TEXTURE_2D, 0);
-
   return EK3_RndTexturesSize++;
-} /* End of 'EK3_RndTextureAddImg' function */
+} /* End of 'EK3_RndTexAddImg' function */
 
-/* Add texture to texture array from .G24 file function.
+/* Add texture by OpenGL low-level format to stock function.
  * ARGUMENTS:
- *  - CHAR *FileName - texture file name.
- *  - CHAR *Name - texture name.
+ *   - texture name:
+ *       CHAR *Name;
+ *   - texture size in pixels:
+ *       INT W, H;
+ *   - OpenGL texture element data type:
+ *       INT GLType;
  * RETURNS:
- *   (INT) - array size, -1 if program didnt work.
+ *   (INT) texture stock number (0 if error is occured).
  */
-INT EK3_RndTextureAddFromFileG24( CHAR *FileName, CHAR *Name )
+INT EK3_RndTexAddFmt( CHAR *Name, INT W, INT H, INT GLType )
 {
-  FILE *F;
-
-  if ((F = fopen(FileName, "rb")) != NULL)
-  {
-    INT w = 0, h = 0;
-    BYTE *mem;
-
-    fread(&w, 2, 1, F);
-    fread(&h, 2, 1, F);
-    if ((mem = malloc(w * h * 3)) != NULL)
-    {
-      INT n;
-      fread(mem, 3, w * h, F);
-
-      glGenTextures(1, &EK3_RndTextures[EK3_RndTexturesSize].TexId);
-      glBindTexture(GL_TEXTURE_2D, EK3_RndTextures[EK3_RndTexturesSize].TexId);
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-      /* glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0, GL_BGR,
-           GL_UNSIGNED_BYTE, mem); */
-      n = log(w > h ? w : h) / log(2);
-      n = n < 1 ? 1 : n;
-
-      glTexStorage2D(GL_TEXTURE_2D, n, GL_RGB8, w, h);
-      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h,
-                      GL_BGR, GL_UNSIGNED_BYTE, mem);
-
-      glGenerateMipmap(GL_TEXTURE_2D);
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-      free(mem);
-    }
-    else
-      return -1;
-    fclose(F);
-  }
-  else
+  if (EK3_RndTexturesSize >= EK3_MAX_TEXTURES)
     return -1;
+
+  /* Setup OpenGL texture */
+  glGenTextures(1, &EK3_RndTextures[EK3_RndTexturesSize].TexId);
+  glBindTexture(GL_TEXTURE_2D, EK3_RndTextures[EK3_RndTexturesSize].TexId);
+
+  glTexStorage2D(GL_TEXTURE_2D, 1, GLType, W, H);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  /* Add to stock */
+  EK3_RndTextures[EK3_RndTexturesSize].W = W;
+  EK3_RndTextures[EK3_RndTexturesSize].H = H;
+  strncpy(EK3_RndTextures[EK3_RndTexturesSize].Name, Name, EK3_STR_MAX - 1);
   return EK3_RndTexturesSize++;
-} /* End of 'EK3_RndTextureAddFromFileG24' function */
+} /* End of 'EK3_RndTexAddFmt' function */
+
+INT EK3_RndTexAddFromFile( CHAR *FileName, CHAR *Name )
+{
+  INT res = -1;
+  ek3IMAGE Img;
+
+  if (EK3_ImgLoad(&Img, FileName))
+  {
+    res = EK3_RndTexAddImg(Name, Img.W, Img.H, 4, Img.Pixels);
+    EK3_ImgFree(&Img);
+  }
+  return res;
+} /* End of 'EK3_RndTexAddFromFile' function */
 
 /* Texture initialization function.
  * ARGUMENTS:

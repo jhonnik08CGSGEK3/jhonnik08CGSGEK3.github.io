@@ -1,12 +1,12 @@
-/* FILE NAME   : u_heli.c
+/* FILE NAME   : u_object.c
  * PROGRAMMER  : EK3
- * LAST UPDATE : 13.02.2023
- * PURPOSE     : Cow unit functions.
+ * LAST UPDATE : 22.02.2023
+ * PURPOSE     : Obj unit functions.
  */
 
 #include <time.h>
 
-#include "anim/rnd/res/rndres.h"
+#include "anim/rnd/rnd.h"
 #include "units/units.h"
 
 typedef struct tagUNIT_OBJECT UNIT_OBJECT;
@@ -14,51 +14,30 @@ struct tagUNIT_OBJECT
 {
   EK3_UNIT_BASE_FIELDS;
   VEC Pos;
-  ek3PRIM Object;
-  INT TexNo;
+  ek3PRIMS Obj;
 };
 
 static VOID Init( UNIT_OBJECT *Uni, ek3ANIM *Ani )
 {
-  ek3MATERIAL mtl =
-  {
-    "Emerald", {0.0215, 0.1745, 0.0215}, {0.07568, 0.61424, 0.07568}, {0.633, 0.727811, 0.633}, 76.8,
-    0, {0},
-    "", 0
-  };
-
-  Uni->Pos = VecSet(5, 2, 2);
-  EK3_RndPrimLoad(&Uni->Object, "bin/objects/helicopter.obj");
-  Uni->TexNo = mtl.Tex[0] = EK3_RndTextureAddFromFileG24("bin/pictures/M.G24", "object");
-
-  Uni->Object.MtlNo = EK3_RndMtlAdd(mtl);
+  Uni->Pos = VecSet(0, 0, 0);
+  EK3_RndPrimsLoad(&Uni->Obj, "bin/objects/banana.g3dm");
 }
 static VOID Close( UNIT_OBJECT *Uni, ek3ANIM *Ani )
 {
-  EK3_RndPrimFree(&Uni->Object);
+  EK3_RndPrimsFree(&Uni->Obj);
 }
 static VOID Render( UNIT_OBJECT *Uni, ek3ANIM *Ani )
 {
-  MATR m = MatrIdentity();
+  MATR m = MatrTranslate(Uni->Pos);
 
   m = MatrMulMatr3(MatrTranslate(Uni->Pos),
                    MatrRotateY(140 * clock() / 1000.0),
-                   MatrScale(VecSet(3, 3, 3)));
+                   MatrScale(VecSet1(10)));
 
-  EK3_RndPrimDraw(&Uni->Object, m);
+  EK3_RndPrimsDraw(&Uni->Obj, m);
 }
 static VOID Response( UNIT_OBJECT *Uni, ek3ANIM *Ani )
 {
-  if (Ani->Keys[VK_SHIFT] && Ani->KeysClick['W'])
-  {
-    INT modes[2];
-
-    glGetIntegerv(GL_POLYGON_MODE, modes);
-    if (modes[0] == GL_LINE)
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  }
 }
 
 ek3UNIT * EK3_UnitObjectCreate( VOID )

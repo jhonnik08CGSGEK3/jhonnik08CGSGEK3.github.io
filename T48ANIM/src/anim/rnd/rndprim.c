@@ -1,7 +1,7 @@
 /* FILE NAME: rndprim.c
  * PURPOSE: Function with primitives.
  * PROGRAMMER: EK3
- * DATE: 10.02.2023
+ * DATE: 27.02.2023
  */
 
 #include <stdio.h>
@@ -27,7 +27,7 @@ VOID EK3_RndPrimEvalNormals( ek3VERTEX *V, INT NoofV, INT *Ind, INT NoofI )
   INT i;
 
   for (i = 0; i < NoofV; i++)
-    V[i].N = VecSet(0, 0, 0);
+    V[i].N = VecSet1(0);
 
   for (i = 0; i < NoofI; i += 3)
   {
@@ -127,12 +127,16 @@ VOID EK3_RndPrimFree( ek3PRIM *Pr )
  */
 VOID EK3_RndPrimDraw( ek3PRIM *Pr, MATR World )
 {
-  INT gl_prim_type, ProgId, loc;
+  INT gl_prim_type, ProgId, loc, i;
   MATR wvp = MatrMulMatr3(Pr->Trans, World, EK3_RndMatrVP),
-       MatrNormTrans = MatrTranspose(MatrInverse(MatrMulMatr(Pr->Trans, World))),
-       winv = MatrInverse(World);
+       winv = MatrTranspose(MatrInverse(World));
 
-  gl_prim_type = Pr->Type == EK3_RND_PRIM_TRIMESH ? GL_TRIANGLES : GL_TRIANGLE_STRIP;
+  if (Pr->Type == EK3_RND_PRIM_TRIMESH)
+    gl_prim_type = GL_TRIANGLES;
+  else if (Pr->Type == EK3_RND_PRIM_PATCH)
+    gl_prim_type = GL_PATCHES;
+  else
+    gl_prim_type = GL_TRIANGLE_STRIP;
 
   ProgId = EK3_RndMtlApply(Pr->MtlNo);
   /* Pass render uniforms */
@@ -144,11 +148,34 @@ VOID EK3_RndPrimDraw( ek3PRIM *Pr, MATR World )
     glUniformMatrix4fv(loc, 1, FALSE, winv.A[0]);
   if ((loc = glGetUniformLocation(ProgId, "CamLoc")) != -1)
     glUniform3fv(loc, 1, &EK3_RndCamLoc.X);
+  for (i = 0; i < 8; i++)
+  {
+    CHAR vname[] = "AddonVec0", fname[] = "AddonFlt0";
+    vname[8] = '0' + i;
+    fname[8] = '0' + i;
+    if ((loc = glGetUniformLocation(ProgId, vname)) != -1)
+      glUniform3fv(loc, 1, &EK3_RndShdAddonV[i].X);
+    if ((loc = glGetUniformLocation(ProgId, fname)) != -1)
+      glUniform1f(loc, EK3_RndShdAddonF[i]);
+  }
 
   /* Build projection */
   glLoadMatrixf(wvp.A[0]);
 
   glBindVertexArray(Pr->VA);
+  if (Pr->Type == EK3_RND_PRIM_PATCH)
+    glPatchParameteri(GL_PATCH_VERTICES, Pr->NumOfPatchPoints);
+
+  if (EK3_Anim.Keys[VK_SHIFT] && EK3_Anim.KeysClick['W'])
+  {
+    INT modes[2];
+
+    glGetIntegerv(GL_POLYGON_MODE, modes);
+    if (modes[0] == GL_LINE)
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    else
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
 
   if (Pr->IBuf == 0)
     glDrawArrays(gl_prim_type, 0, Pr->NumOfElements);
@@ -234,6 +261,7 @@ BOOL EK3_RndPrimLoad( ek3PRIM *Pr, CHAR *FileName )
       I[nf++] = n3;
     }
 
+  EK3_RndPrimEvalNormals(V, nvold, I, nfold * 3);
   if (!EK3_RndPrimCreate(Pr, EK3_RND_PRIM_TRIMESH, V, nvold, I, nfold * 3))
   {
     free(I);
@@ -242,7 +270,6 @@ BOOL EK3_RndPrimLoad( ek3PRIM *Pr, CHAR *FileName )
     return FALSE;
   }
 
-  EK3_RndPrimEvalNormals(V, nvold, I, nfold * 3);
   free(I);
   free(V);
   fclose(F);

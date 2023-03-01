@@ -1,7 +1,7 @@
 /* FILE NAME: rndres.h
  * PURPOSE: Resources functions prototypes and parameters.
  * PROGRAMMER: EK3
- * DATE: 06.02.2023
+ * DATE: 27.02.2023
  */
 
 #ifndef __rndres_h_
@@ -45,9 +45,19 @@ typedef struct tagek3MATERIAL
   INT ShdNo;
 } ek3MATERIAL;
 
+/* Image representation type */
+typedef struct tagek3IMAGE
+{
+  INT W, H;      /* Image size */
+  DWORD *Pixels; /* Image pixels */
+} ek3IMAGE;
+
 /***
   Shaders handle functions
 ***/
+
+extern VEC EK3_RndShdAddonV[8];
+extern FLT EK3_RndShdAddonF[8];
 
 /* Shader initialization function.
  * ARGUMENTS:
@@ -93,7 +103,20 @@ VOID EK3_RndShdUpdate( VOID );
  * RETURNS:
  *   (INT) - array size, -1 if array is full.
  */
-INT EK3_RndTextureAddImg( CHAR *Name, INT W, INT H, VOID *ImageData );
+INT EK3_RndTexAddImg( CHAR *Name, INT W, INT H, INT C, VOID *Bits );
+
+/* Add texture by OpenGL low-level format to stock function.
+ * ARGUMENTS:
+ *   - texture name:
+ *       CHAR *Name;
+ *   - texture size in pixels:
+ *       INT W, H;
+ *   - OpenGL texture element data type:
+ *       INT GLType;
+ * RETURNS:
+ *   (INT) texture stock number (0 if error is occured).
+ */
+INT EK3_RndTexAddFmt( CHAR *Name, INT W, INT H, INT GLType );
 
 /* Add texture to texture array from .G24 file function.
  * ARGUMENTS:
@@ -102,7 +125,7 @@ INT EK3_RndTextureAddImg( CHAR *Name, INT W, INT H, VOID *ImageData );
  * RETURNS:
  *   (INT) - array size, -1 if program didnt work.
  */
-INT EK3_RndTextureAddFromFileG24( CHAR *FileName, CHAR *Name );
+INT EK3_RndTexAddFromFile( CHAR *FileName, CHAR *Name );
 
 /* Texture initialization function.
  * ARGUMENTS:
@@ -123,6 +146,14 @@ VOID EK3_RndTexClose( VOID );
 /***
   Materials handle functions
 ***/
+
+/* Default material creation function.
+ * ARGUMENTS:
+ *  - None.
+ * RETURNS:
+ *   (ek3MATERIAL) - default material struct.
+ */
+ek3MATERIAL EK3_RndMtlGetDef( VOID );
 
 /* Material applying function.
  * ARGUMENTS:
@@ -154,7 +185,49 @@ VOID EK3_RndMtlClose( VOID );
  * RETURNS:
  *   (INT) - array of materials size.
  */
-INT EK3_RndMtlAdd( ek3MATERIAL Mtl );
+INT EK3_RndMtlAdd( ek3MATERIAL *Mtl );
+
+/* Material getting from array function.
+ * ARGUMENTS:
+ *  - INT MtlNo - material number in array
+ * RETURNS:
+ *   (ek3MATERIAL) - material struct.
+ */
+ek3MATERIAL EK3_RndMtlGet( INT MtlNo );
+
+/***
+ * Image handle
+ ***/
+
+/* Create image function.
+ * ARGUMENTS:
+ *   - image data:
+ *       ek3IMAGE *Img;
+ *   - new image size:
+ *       INT W, H;
+ * RETURNS:
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL EK3_ImgCreate( ek3IMAGE *Img, INT W, INT H );
+
+/* Free image function.
+ * ARGUMENTS:
+ *   - image data:
+ *       ek3IMAGE *Img;
+ * RETURNS: None.
+ */
+VOID EK3_ImgFree( ek3IMAGE *Img );
+
+/* Load image from file function.
+ * ARGUMENTS:
+ *   - image data:
+ *       ek3IMAGE *Img;
+ *   - image file name:
+ *       CHAR *FileName;
+ * RETURNS:
+ *   (BOOL) TRUE if success, FALSE otherwise.
+ */
+BOOL EK3_ImgLoad( ek3IMAGE *Img, CHAR *FileName );
 
 /* Resources function headers */
 VOID EK3_RndResInit( VOID );

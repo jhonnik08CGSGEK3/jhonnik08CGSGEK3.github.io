@@ -1,7 +1,7 @@
 /* FILE NAME: rndbase.c
  * PURPOSE: Render base functions.
  * PROGRAMMER: EK3
- * DATE: 13.02.2023
+ * DATE: 27.02.2023
  */
 
 #include <stdio.h>
@@ -87,7 +87,12 @@ VOID EK3_RndInit( HWND hWnd )
   glEnable(GL_PRIMITIVE_RESTART);
   glPrimitiveRestartIndex(-1);
 
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   EK3_RndResInit();
+  EK3_RndTargetInit();
+  EK3_RndMarkerInit();
 
   EK3_RndProjDist = EK3_RndProjSize = 0.1;
   EK3_RndProjFarClip = 300;
@@ -96,13 +101,13 @@ VOID EK3_RndInit( HWND hWnd )
   EK3_RndFrameH = 30;
   EK3_RndCamSet(VecSet(13, 25, 18), VecSet1(0), VecSet(0, 1, 0));
 
-  /* #ifndef NDEBUG
+  #ifndef NDEBUG
   glEnable(GL_DEBUG_OUTPUT);
   glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
   glDebugMessageCallback(glDebugOutput, NULL);
   glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE,
     0, NULL, GL_TRUE);
-  #endif */ /* NDEBUG */
+  #endif /* NDEBUG */
 } /* End of 'EK3_RndInit' function */
 
 /* Render deinitialization function.
@@ -114,6 +119,8 @@ VOID EK3_RndInit( HWND hWnd )
 VOID EK3_RndClose( VOID )
 {
   EK3_RndResClose();
+  EK3_RndMarkerClose();
+  EK3_RndTargetClose();
   wglMakeCurrent(NULL, NULL);
   wglDeleteContext(EK3_hRndGLRC);
   ReleaseDC(EK3_hRndWnd, EK3_hRndDC);
@@ -135,6 +142,8 @@ VOID EK3_RndResize( INT W, INT H )
 
   /* Counting projection */
   EK3_RndProjSet();
+
+  EK3_RndTargetResize(W, H);
 } /* End of 'EK3_RndResize' function */
 
 /* Render copy frame function.
@@ -167,6 +176,8 @@ VOID EK3_RndStart( VOID )
     ReloadTime = EK3_Anim.GlobalTime;
     EK3_RndShdUpdate();
   }
+
+  EK3_RndTargetStart();
 } /* End of 'EK3_RndStart' function */
 
 /* Render draw end function.
@@ -178,6 +189,7 @@ VOID EK3_RndStart( VOID )
 VOID EK3_RndEnd( VOID )
 {
   glFinish();
+  EK3_RndTargetEnd();
 } /* End of 'EK3_RndEnd' function */
 
 /* Debug output function.

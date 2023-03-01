@@ -60,6 +60,12 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
     hInstance,                    /* Instance handle */
     NULL);                        /* Pointer to additional parameters */
 
+  EK3_AnimInit(hWnd);
+  EK3_AnimUnitAdd(EK3_UnitCtrlCreate());
+  //EK3_AnimUnitAdd(EK3_UnitMarkerCreate());
+  EK3_AnimUnitAdd(EK3_UnitObjectCreate());
+  EK3_AnimUnitAdd(EK3_UnitGridCreate());
+
   /* Show and redraw window */
   ShowWindow(hWnd, SW_SHOWNORMAL);
   UpdateWindow(hWnd);
@@ -108,11 +114,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg,
       GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYBORDER) * 2;
     return 0;
   case WM_CREATE:
-    EK3_AnimInit(hWnd);
-    EK3_AnimUnitAdd(EK3_UnitCowCreate());
-    EK3_AnimUnitAdd(EK3_UnitCtrlCreate());
-    EK3_AnimUnitAdd(EK3_UnitObjectCreate());
-    EK3_AnimUnitAdd(EK3_UnitGridCreate());
     SetTimer(hWnd, 47, 2, NULL);
     return 0;
   case WM_SIZE:

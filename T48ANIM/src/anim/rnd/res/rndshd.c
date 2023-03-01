@@ -1,7 +1,7 @@
 /* FILE NAME: rndshd.c
  * PURPOSE: Shaders usage functions.
  * PROGRAMMER: EK3
- * DATE: 10.02.2023
+ * DATE: 27.02.2023
  */
 
 #include <stdio.h>
@@ -11,6 +11,9 @@
 /* Shaders stock */
 ek3SHADER EK3_RndShaders[EK3_MAX_SHADERS]; /* Array of shaders */
 INT EK3_RndShadersSize;                    /* Shaders array store size */
+
+VEC EK3_RndShdAddonV[8];
+FLT EK3_RndShdAddonF[8];
 
 /* Load text from file function.
  * ARGUMENTS:
@@ -86,6 +89,9 @@ static INT EK3_RndShdLoad( CHAR *FileNamePrefix )
   {
     {"vert", GL_VERTEX_SHADER},
     {"frag", GL_FRAGMENT_SHADER},
+    {"geom", GL_GEOMETRY_SHADER},
+    {"eval", GL_TESS_EVALUATION_SHADER},
+    {"ctrl", GL_TESS_CONTROL_SHADER},
   };
   INT NoofS = sizeof(shds) / sizeof(shds[0]);
   BOOL isok = TRUE;
@@ -98,6 +104,8 @@ static INT EK3_RndShdLoad( CHAR *FileNamePrefix )
     txt = EK3_RndShdLoadTextFromFile(Buf);
     if (txt == NULL)
     {
+      if (i >= 2)
+        continue;
       EK3_RndShdLog(FileNamePrefix, shds[i].Name, "Error load file");
       isok = FALSE;
       break;
@@ -238,7 +246,7 @@ INT EK3_RndShdAdd( CHAR *ShaderFileNamePrefix )
   /* Look for existing shader */
   /*
   for (i = 0; i < EK3_RndShadersSize; i++)
-    if (strcmp(EK3_RndShaders[i].Name == ShaderFileNamePrefix) == 0)
+    if (strcmp(EK3_RndShaders[i].Name, ShaderFileNamePrefix) == 0)
       return i;
   */
   /* Add shader in array */

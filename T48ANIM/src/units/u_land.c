@@ -1,6 +1,6 @@
 /* FILE NAME   : u_land.c
  * PROGRAMMER  : EK3
- * LAST UPDATE : 10.02.2023
+ * LAST UPDATE : 22.02.2023
  * PURPOSE     : Unit examples creation functions.
  */
 
@@ -11,7 +11,6 @@ struct tagUNIT_GRID
 {
   EK3_UNIT_BASE_FIELDS;
   VEC Pos;
-  ek3GRID G;
   ek3PRIM Pr;
 };
 
@@ -27,8 +26,10 @@ static VOID EK3_UnitInit( UNIT_GRID *Uni, ek3ANIM *Ani )
 {
   INT w, h, x, y;
   ek3VERTEX *V;
+  ek3GRID G;
   HBITMAP hBm;
   BITMAP bm;
+  ek3MATERIAL mtl = EK3_RndMtlGetDef();
 
   if ((hBm = LoadImage(NULL, "bin/pictures/hf.bmp", IMAGE_BITMAP, 0, 0,
                        LR_LOADFROMFILE | LR_CREATEDIBSECTION)) != NULL)
@@ -49,11 +50,15 @@ static VOID EK3_UnitInit( UNIT_GRID *Uni, ek3ANIM *Ani )
           V[y * w + x].P = VecSet(x / (w - 1.0),
                                   hgt / 255.0,
                                   1 - y / (h - 1.0));
-          V[y * w + x].C = Vec4Set(0.70, 0.50, 0.10, 1);
+          V[y * w + x].T = Vec2Set(x / (w - 1.0), 1 - y / (h - 1.0));
         }
       EK3_RndGridAutoNormals(V, w, h);
-      EK3_RndGridCreate(&Uni->G, w, h, V);
-      EK3_RndPrimFromGrid(&Uni->Pr, &Uni->G);
+      EK3_RndGridCreate(&G, w, h, V);
+      EK3_RndPrimFromGrid(&Uni->Pr, &G);
+      EK3_RndGridFree(&G);
+
+      mtl.Tex[0] = EK3_RndTexAddFromFile("bin/pictures/hftex.bmp", "land");
+      Uni->Pr.MtlNo = EK3_RndMtlAdd(&mtl);
       free(V);
     }
   }
@@ -69,7 +74,6 @@ static VOID EK3_UnitInit( UNIT_GRID *Uni, ek3ANIM *Ani )
  */
 static VOID EK3_UnitClose( UNIT_GRID *Uni, ek3ANIM *Ani )
 {
-  EK3_RndGridFree(&Uni->G);
   EK3_RndPrimFree(&Uni->Pr);
 } /* End of 'EK3_UnitClose' function */
 
@@ -83,16 +87,6 @@ static VOID EK3_UnitClose( UNIT_GRID *Uni, ek3ANIM *Ani )
  */
 static VOID EK3_UnitResponse( UNIT_GRID *Uni, ek3ANIM *Ani )
 {
-  if (Ani->Keys[VK_SHIFT] && Ani->KeysClick['W'])
-  {
-    INT modes[2];
-
-    glGetIntegerv(GL_POLYGON_MODE, modes);
-    if (modes[0] == GL_LINE)
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  }
 } /* End of 'EK3_UnitResponse' function */
 
 /* Unit render function.
@@ -105,9 +99,10 @@ static VOID EK3_UnitResponse( UNIT_GRID *Uni, ek3ANIM *Ani )
  */
 static VOID EK3_UnitRender( UNIT_GRID *Uni, ek3ANIM *Ani )
 {
-  VEC S = {25, 25, 25};
+  VEC S = VecSet1(100);
 
-  EK3_RndPrimDraw(&Uni->Pr, MatrScale(S));
+  EK3_RndPrimDraw(&Uni->Pr, MatrMulMatr(MatrScale(S),
+                                        MatrTranslate(VecSet(-S.X / 2, -5, -S.Z / 2))));
 } /* End of 'EK3_UnitRender' function */
 
 /* Unit creation function.

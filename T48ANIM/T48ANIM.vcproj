@@ -238,12 +238,28 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\anim\rnd\rndmrk.c"
+						>
+					</File>
+					<File
 						RelativePath=".\src\anim\rnd\rndprim.c"
+						>
+					</File>
+					<File
+						RelativePath=".\src\anim\rnd\rndprims.c"
+						>
+					</File>
+					<File
+						RelativePath=".\src\anim\rnd\rndtrg.c"
 						>
 					</File>
 					<Filter
 						Name="Resources System"
 						>
+						<File
+							RelativePath=".\src\anim\rnd\res\image.c"
+							>
+						</File>
 						<File
 							RelativePath=".\src\anim\rnd\res\rndmtl.c"
 							>
@@ -279,10 +295,6 @@
 				Name="Units"
 				>
 				<File
-					RelativePath=".\src\units\u_bball.c"
-					>
-				</File>
-				<File
 					RelativePath=".\src\units\u_cow.c"
 					>
 				</File>
@@ -295,7 +307,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\units\u_mrk.c"
+					>
+				</File>
+				<File
 					RelativePath=".\src\units\u_object.c"
+					>
+				</File>
+				<File
+					RelativePath=".\src\units\u_sky.c"
 					>
 				</File>
 				<File

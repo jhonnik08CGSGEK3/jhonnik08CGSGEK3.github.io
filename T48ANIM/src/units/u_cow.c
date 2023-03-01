@@ -27,27 +27,17 @@ static VOID Close( UNIT_COW *Uni, ek3ANIM *Ani )
 }
 static VOID Render( UNIT_COW *Uni, ek3ANIM *Ani )
 {
-  MATR m = MatrIdentity();
-
+  MATR m = MatrTranslate(Uni->Pos);
+  /*
   m = MatrMulMatr4(MatrTranslate(Uni->Pos),
-                  MatrRotateY(-120 * clock() / 1000.0),
-                  MatrRotateX(90 * clock() / 1000.0),
-                  MatrRotateZ(30 * clock() / 1000.0));
-
+                   MatrRotateY(-120 * clock() / 1000.0),
+                   MatrRotateX(90 * clock() / 1000.0),
+                   MatrRotateZ(30 * clock() / 1000.0));
+  */
   EK3_RndPrimDraw(&Uni->Cow, m);
 }
 static VOID Response( UNIT_COW *Uni, ek3ANIM *Ani )
 {
-  if (Ani->Keys[VK_SHIFT] && Ani->KeysClick['W'])
-  {
-    INT modes[2];
-
-    glGetIntegerv(GL_POLYGON_MODE, modes);
-    if (modes[0] == GL_LINE)
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  }
 }
 
 ek3UNIT * EK3_UnitCowCreate( VOID )
