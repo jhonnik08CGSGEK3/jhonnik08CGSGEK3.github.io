@@ -1,0 +1,12 @@
+body {
+    background-color: #FFFFFF;
+    background-image: none;
+}
+
+p {
+    font-family:'Times New Roman', Times, serif
+}
+.animatedText {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    animation: 2s ease-in-out infinite alternate pulse;
+}
