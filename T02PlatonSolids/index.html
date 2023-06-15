@@ -1,80 +1,41 @@
-<!DOCTYPE html>
+<!doctype HTML>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>CGSG:EK3 CGSG'SummerPractice. G.Julia Drawing</title>
-  </head>
-  <body>
-    <style>
-    input
-    {
-      zoom: 1.8;
-    }
-    div#ctrl span
-    {
-      color: Blue;
-      width: 13em;
-      font-weight: Bold;
-      font-family: Consolas;
-      left: 300px;
-    }
-    td:nth-of-type(5)
-    {
-      text-align: Right;
-      width: 3.5em;
-    }
-    #fpsd
-    {
-      padding: 8px;
-      margin: 2px;
-      display: inline;
-      border: 3px Solid Brown;
-      border-radius: 12px;
-    }
-    #fps
-    {
-      display: inline;
-      width: 8em;
-    }
-    </style>
-    <div id='ctrl' style="font-size: 2em">
-      <br /><input id='pause' type="checkbox" value="" /> Pause
-      <div id='fpsd'>FPS: <div id="fps">30.0</div></div>
-      <br /><br />Julia & Mandelbrot fractals<br />
-      <input id='reset' type="button" checked value="Reset" />
-    </div>
-    <canvas id="myCan" width="1002px" height="1002px" style="border: 1px Solid Red"></canvas>
-    <script type="module">
-      import * as ekgl from "./main.js";
-
-      window.addEventListener("load", () => {
-        document.body.onkeydown = function (e) {
-          if (e.code == "ArrowUp") document.bgColor = "#AADDFF";
-          if (e.code == "ArrowDown") document.bgColor = "#AAFFDD";
-        };
-
-        document.querySelector('#pause').addEventListener('click', ekgl.myPause);
-        //document.querySelectorAll('.slider').forEach((tag) =>  tag.addEventListener('input', ekgl.mySlider));
-        //document.querySelector('#sl_Col').addEventListener('input', ekgl.myColor);
-        document.querySelector('#reset').addEventListener('click', ekgl.myReset);
-        document.querySelector('#myCan').addEventListener('mousemove', ekgl.myDragHandle);
-        document.querySelector('#myCan').addEventListener('mousewheel', ekgl.myWheelHandle);
-        //  () => {
-        //    ekgl.myPause(this);
-        //  });
-
-        ekgl.initGL();
-        const draw = () => {
-            ekgl.Render();
-            window.requestAnimationFrame(draw);
-        };
-        draw();
-        /*
-        window.setInterval(() => {
-          Render();
-        }, 1);
-        */
-      });
-    </script>
-  </body>
+    <head> 
+        <meta charset="UTF_8">
+        <title>EK WebGL 3D - CGSG FOREVER!</title>
+        <!-- <link rel="stylesheet" href="styles.css"> -->
+    </head>
+    <body>
+        <!-- <script type="text/javascript" src="./render.js"></script> -->
+        <script type="module">
+            import { initGL } from "./render.js";
+            window.addEventListener("load", () => {
+                initGL();
+                let tag = document.getElementById("a1");
+                if (tag != null)
+                    tag.innerHTML = "OpenGL is initialized";
+                // window.setInterval(() => {
+                //     Render();
+                // }, 30);
+            });
+        </script>
+        <!-- <script type="module">
+            import {Timer} from "./timer.js"
+            let myTimer = new Timer();
+            // ...
+            myTimer.response();
+            let time = myTimer.localTime;
+            if (myTimer.isPause)
+                console.log("Paused");
+            // myTimer.isPause = !myTimer.isPause;
+            //document.getElementById('fps').innerHTML = myTimer.getFPS();
+            myTimer.response('fps'); // -- update FPS automatically
+        </script> -->
+        <div>
+            <img src="./favicon.ico"> <h1>WebGL 3D CGSG Super Summer Project 2023 Advanced</h1>
+            <a>CGSG FOREVER!</a>
+            <br></br>
+            <canvas id="glCanvas" width="1000" height="1000" style="border: 1px Solid Red"></canvas>
+        </div>
+    </body>
 </html>
