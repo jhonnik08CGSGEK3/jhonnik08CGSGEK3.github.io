@@ -1,0 +1,41 @@
+<!doctype HTML>
+<html>
+    <head> 
+        <meta charset="UTF_8">
+        <title>EK WebGL 3D - CGSG FOREVER!</title>
+        <!-- <link rel="stylesheet" href="styles.css"> -->
+    </head>
+    <body>
+        <!-- <script type="text/javascript" src="./render.js"></script> -->
+        <script type="module">
+            import { initGL } from "./render.js";
+            window.addEventListener("load", () => {
+                initGL();
+                let tag = document.getElementById("a1");
+                if (tag != null)
+                    tag.innerHTML = "OpenGL is initialized";
+                // window.setInterval(() => {
+                //     Render();
+                // }, 30);
+            });
+        </script>
+        <!-- <script type="module">
+            import {Timer} from "./timer.js"
+            let myTimer = new Timer();
+            // ...
+            myTimer.response();
+            let time = myTimer.localTime;
+            if (myTimer.isPause)
+                console.log("Paused");
+            // myTimer.isPause = !myTimer.isPause;
+            //document.getElementById('fps').innerHTML = myTimer.getFPS();
+            myTimer.response('fps'); // -- update FPS automatically
+        </script> -->
+        <div>
+            <img src="./favicon.ico"> <h1>WebGL 3D CGSG Super Summer Project 2023 Advanced</h1>
+            <a>CGSG FOREVER!</a>
+            <br></br>
+            <canvas id="glCanvas" width="1000" height="1000" style="border: 1px Solid Red"></canvas>
+        </div>
+    </body>
+</html>
