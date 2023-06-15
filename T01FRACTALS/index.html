@@ -15,7 +15,7 @@
       color: Blue;
       width: 13em;
       font-weight: Bold;
-      font-family: Consolas;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
       left: 300px;
     }
     td:nth-of-type(5)
@@ -30,35 +30,22 @@
       display: inline;
       border: 3px Solid Brown;
       border-radius: 12px;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
     }
     #fps
     {
       display: inline;
       width: 8em;
     }
+    #comic
+    {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
+    }
     </style>
     <div id='ctrl' style="font-size: 2em">
-      <br /><input id='pause' type="checkbox" value="" /> Pause
+      <br /><input id='pause' type="checkbox" value="" /><a id="comic"> Pause</a><br /><br />
       <div id='fpsd'>FPS: <div id="fps">30.0</div></div>
-      <br />Julia
-      <table>
-        <tr>
-          <td>C.x.B:</td><td><span id="CxB">0.35</span></td><td><input id="sl_CxB" type="range" min="8" max="180" value="35" class="slider" /></td>
-          <td>C.x.S:</td><td><span id="CxS">0.00</span></td><td><input id="sl_CxS" type="range" min="0" max="100" value="0" class="slider" /></td>
-        </tr>
-        <tr>
-          <td>C.y.B:</td><td><span id="CyB">0.35</span></td><td><input id="sl_CyB" type="range" min="8" max="180" value="35" class="slider" /></td>
-          <td>C.y.S:</td><td><span id="CyS">0.00</span></td><td><input id="sl_CyS" type="range" min="0" max="100" value="0" class="slider" /></td>
-        </tr>
-        <tr>
-          <td>S.h.h:</td><td><span id="Sh">0.00</span></td><td><input id="sl_Sh" type="range" min="0" max="500" value="0" class="slider" /></td>
-          <td>R.o.t:</td><td><span id="Rot">0.00</span></td><td><input id="sl_Rot" type="range" min="0" max="18000" value="0" class="slider" /></td>
-        </tr>
-        <tr>
-          <td>S.c.l:</td><td><span id="Scl">1.00</span></td><td><input id="sl_Scl" type="range" min="47" max="800" value="100" class="slider" /></td>
-          <td>Color:</td><td colspan="2"><input style="width: 100%;" id="sl_Col" type="color" value="#FF0000" /></td>
-        </tr>
-      </table>
+      <br /><br /><a id="comic">Julia & Mandelbrot fractals</a><br />
       <input id='reset' type="button" checked value="Reset" />
     </div>
     <canvas id="myCan" width="1002px" height="1002px" style="border: 1px Solid Red"></canvas>
@@ -72,8 +59,8 @@
         };
 
         document.querySelector('#pause').addEventListener('click', ekgl.myPause);
-        document.querySelectorAll('.slider').forEach((tag) =>  tag.addEventListener('input', ekgl.mySlider));
-        document.querySelector('#sl_Col').addEventListener('input', ekgl.myColor);
+        //document.querySelectorAll('.slider').forEach((tag) =>  tag.addEventListener('input', ekgl.mySlider));
+        //document.querySelector('#sl_Col').addEventListener('input', ekgl.myColor);
         document.querySelector('#reset').addEventListener('click', ekgl.myReset);
         document.querySelector('#myCan').addEventListener('mousemove', ekgl.myDragHandle);
         document.querySelector('#myCan').addEventListener('mousewheel', ekgl.myWheelHandle);
