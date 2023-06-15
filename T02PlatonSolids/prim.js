@@ -61,42 +61,41 @@ class _prim {
     constructor(type, vData, vCnt, iData, iCnt, shaderProgram) {
       this.vBuf = this.vArray = this.iBuf = 0;  
       this.gl = gl;
-        this.type = type;
-        this.vData = vData;
-        this.iData = iData;
+      this.type = type;
+      this.vData = vData;
+      this.iData = iData;
+      this.shader = shaderProgram;
 
-        this.vCnt = vCnt;
-        this.iCnt = iCnt;
+      this.vCnt = vCnt;
+      this.iCnt = iCnt;
 
-        this.trans = mat4();
+      this.trans = mat4();
 
-        if (vData.length != 0 && vCnt != 0) {
-            // Create vertex buffer object
-            this.vBuf = gl.createBuffer();
-            this.vArray = gl.createVertexArray();
-            gl.bindVertexArray(this.vArray);
-        
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.vBuf);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vData), gl.STATIC_DRAW);
+      if (vData.length != 0 && vCnt != 0) {
+          // Create vertex buffer object
+          this.vBuf = gl.createBuffer();
+          this.vArray = gl.createVertexArray();
+          gl.bindVertexArray(this.vArray);
+      
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.vBuf);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vData), gl.STATIC_DRAW);
 
-            gl.vertexAttribPointer(0, 3, gl.FLOAT, false, sizeInBytes, 0);  // position
-            gl.vertexAttribPointer(1, 4, gl.FLOAT, false, sizeInBytes, 12); // color
+          gl.vertexAttribPointer(0, 3, gl.FLOAT, false, sizeInBytes, 0);  // position
+          gl.vertexAttribPointer(1, 4, gl.FLOAT, false, sizeInBytes, 12); // color
 
-            gl.enableVertexAttribArray(0);
-            gl.enableVertexAttribArray(1);
+          gl.enableVertexAttribArray(0);
+          gl.enableVertexAttribArray(1);
 
-            gl.bindVertexArray(null);
-        }
+          gl.bindVertexArray(null);
+      }
 
-        if (iData.length != 0 && iCnt != 0) {
-            // Create index buffer object
-            this.iBuf = gl.createBuffer();
-            gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.iBuf);
-            gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(this.iData), this.gl.STATIC_DRAW);
-            gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
-        }
-
-        this.shader = shaderProgram;
+      if (iData.length != 0 && iCnt != 0) {
+          // Create index buffer object
+          this.iBuf = gl.createBuffer();
+          gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.iBuf);
+          gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(this.iData), this.gl.STATIC_DRAW);
+          gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+      }
     }
 
     draw(world, cam) {
@@ -121,7 +120,6 @@ class _prim {
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         }
         gl.bindVertexArray(null);
-        gl.useProgram(null);
     }
 }
 
