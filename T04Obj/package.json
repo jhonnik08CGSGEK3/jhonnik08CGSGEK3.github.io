@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "http-server": "^14.1.1",
+    "require": "^2.4.20"
+  },
+  "scripts": {
+    "start": "http-server -c-1 -p 8000"
+  }
+}
