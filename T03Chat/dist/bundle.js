@@ -3569,12 +3569,11 @@
             console.log(socket.id);
             // x8WIv7-mJelg7on_ALbx
             socket.on("MessageFromServer", function(msg) {
-                let tag = document.getElementById("textBox");
-                console.log(msg);
-                let before = tag.value + "\n";
+                let textDoc = document.getElementById("textBox");
+                let chatHistory = textDoc.value + "\n";
                 console.log(`${socket.id} received message ${msg}`);
-                tag.value = before + msg;
-                tag.scrollTop = tag.scrollHeight;
+                textDoc.value = chatHistory + msg;
+                textDoc.scrollTop = textDoc.scrollHeight;
             });
         });
 

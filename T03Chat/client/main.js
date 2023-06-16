@@ -8,12 +8,12 @@ async function main() {
   socket.on("connect", () => {
     console.log(socket.id); // http://192.168.30.40:6969/
     socket.on("MessageFromServer", function (msg) {
-      let tag = document.getElementById("textBox");
+      let textDoc = document.getElementById("textBox");
       console.log(msg);
-      let before = tag.value + "\n";
+      let chatHistory = textDoc.value + "\n";
       console.log(`${socket.id} received message ${msg}`);
-      tag.value = before + msg;
-      tag.scrollTop = tag.scrollHeight;
+      textDoc.value = chatHistory + msg;
+      textDoc.scrollTop = textDoc.scrollHeight;
     });
   });
 
@@ -32,8 +32,8 @@ async function main() {
       if (
         !isEmpty(value) &&
         !isEmpty(nick) &&
-        nick.length <= 50 &&
-        value.length <= 200
+        nick.length <= 25 &&
+        value.length <= 300
       ) {
         console.log(`message from client: ${value}`);
         document.getElementById("messageBox").value = "";

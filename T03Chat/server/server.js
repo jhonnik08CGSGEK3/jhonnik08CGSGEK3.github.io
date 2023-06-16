@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
   clients.push(socket);
   console.log(`Client connected with id: ${socket.id}`);
   socket.on("MessageToServer", (msg) => {
-    const replyMsg = `${msg} (sent by ${socket.id})`;
+    const replyMsg = `${msg} (id: ${socket.id})`;
     console.log(replyMsg);
     for (client of clients) {
       client.emit("MessageFromServer", replyMsg);
