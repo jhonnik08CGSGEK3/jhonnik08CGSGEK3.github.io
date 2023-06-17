@@ -12,5 +12,5 @@ void main( void )
 {
   gl_Position = in_pos;
   tpos = in_pos.xy;
-  color = vec4(SetColor, 1);
+  color = vec4(1, 0, 1, 1);
 }

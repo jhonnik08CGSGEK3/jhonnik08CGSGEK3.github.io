@@ -35,11 +35,9 @@ void main( void )
 {
 
   vec2 tp = (tpos + 1.0) / 2.0 * BufData[0].yw + BufData[0].xz;
-  //tp.x = tpos.x;
-  //tp.y = BufData[0]
   vec2 p = Rot(Time * BufData[3].z * acos(-1.0) / 180.0, tp) * 1.0;
   //vec2 p = tp;
-  float c = Jul(p, vec2(BufData[2].x + BufData[2].y * sin(Time), BufData[2].z + BufData[2].w * sin(Time + BufData[3].x))) / 256.0;
+  float c = Jul(p, p) / 256.0;
   //float c = Jul(p, p) / 256.0;
-  o_color = mod(color * c * BufData[3].y, vec4(1, 1, 1, 1));
+  o_color = mod(color * c, vec4(1, 1, 1, 1));
 }

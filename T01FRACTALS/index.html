@@ -25,11 +25,6 @@
     }
     #fpsd
     {
-      padding: 8px;
-      margin: 2px;
-      display: inline;
-      border: 3px Solid Brown;
-      border-radius: 12px;
       font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
     }
     #fps
@@ -44,9 +39,9 @@
     </style>
     <div id='ctrl' style="font-size: 2em">
       <a href="../index.html">Back to main page</a><br />
-      <br /><input id='pause' type="checkbox" value="" /><a id="comic"> Pause</a><br /><br />
+      <br /><a id="comic">Pause </a><input id='pause' type="checkbox" value="" /><br />
       <div id='fpsd'>FPS: <div id="fps">30.0</div></div>
-      <br /><br /><a id="comic">Julia & Mandelbrot fractals</a><br />
+      <br /><a id="comic">Julia & Mandelbrot fractals</a><br />
       <input id='reset' type="button" checked value="Reset" />
     </div>
     <canvas id="myCan" width="1002px" height="1002px" style="border: 1px Solid Red"></canvas>
@@ -54,14 +49,7 @@
       import * as ekgl from "./main.js";
 
       window.addEventListener("load", () => {
-        document.body.onkeydown = function (e) {
-          if (e.code == "ArrowUp") document.bgColor = "#AADDFF";
-          if (e.code == "ArrowDown") document.bgColor = "#AAFFDD";
-        };
-
         document.querySelector('#pause').addEventListener('click', ekgl.myPause);
-        //document.querySelectorAll('.slider').forEach((tag) =>  tag.addEventListener('input', ekgl.mySlider));
-        //document.querySelector('#sl_Col').addEventListener('input', ekgl.myColor);
         document.querySelector('#reset').addEventListener('click', ekgl.myReset);
         document.querySelector('#myCan').addEventListener('mousemove', ekgl.myDragHandle);
         document.querySelector('#myCan').addEventListener('mousewheel', ekgl.myWheelHandle);
