@@ -1,0 +1,44 @@
+body {
+    position: relative;
+    background-size: 100%;
+    background-image: url(bin/Chess3.jpg);
+}
+
+body::before {
+    content: "";
+    background-size: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+    z-index: 1;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td {
+    border: 1px solid black;
+    width: 85px;
+    height: 85px;
+    font-size: 2.5em;
+    text-align: center;
+    background-color: rgb(240, 215, 179);
+    position: relative;
+    z-index: 2;
+}
+
+tr {
+    border: 1px solid black;
+    position: relative;
+    z-index: 2;
+}
+
+div {
+    text-align: center;
+}
+
+img {
+    width: 75px;
+}
