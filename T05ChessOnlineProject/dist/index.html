@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Chess Round</title>
-    <link rel = "stylesheet" href = "styles.css">
+    <title>Chess Online (v0.8.6)</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <script src="bundle.js" type="module"></script>
@@ -15,24 +15,24 @@
           <br />
           <div>
             <a id="someHeader">Move History</a><br />
-            <textarea id="history" style="width:400px; height:300px; text-align: center; resize: none" readonly></textarea><br />
+            <textarea id="history" style="width:400px; height:300px; text-align: center; font-size: 1.5em; resize: none" readonly></textarea><br />
             <a id="someHeader">Chat room</a><br />
-            <textarea id="historyChat" style="width:400px; height:300px; text-align: left; resize: none" readonly></textarea>
+            <textarea id="historyChat" style="width:400px; height:300px; text-align: left; font-size: 1.25em; resize: none" readonly></textarea>
+          </div>
+          <!-- <input id="nameInput" type="text" placeholder="Name"> -->
+        </aside>
+        <br />
+        <aside id="rightTab">
+          <div id="greenBox">
+            <section id="whitePlayer" style="color: white; font-size: 1.5em">White: Not in a match</section>
+            <br />
+            <section id="whoseTurn" style="color: white; font-size: 2em"></section>
+            <br />
+            <section id="blackPlayer" style="color: white; font-size: 1.5em">Black: Not in a match</section>
           </div>
         </aside>
-        <aside id="rightTab">
-          <section id="whitePlayer" style="color: white; font-size: 1.5em">White: Not in a room</section>
-          <section id="blackPlayer" style="color: white; font-size: 1.5em">Black: Not in a room</section>
-          <section id="roomID" style="color: white; font-size: 1.5em">Room ID: Not in a room</section>
-        </aside>
         <div>
-          <!-- dsadsadasd<br>
-          sdsad<br>
-          dsa<br>
-          sd<br>
-          dasdsadasdsadsad<br>
-          asdsadsadasdasds<br> -->
-          <table style="border-color: black; border-width: 4px; border-style: solid; border-collapse: collapse;">
+          <table id="chessBoard" style="border-color: black; border-width: 4px; border-style: solid; border-collapse: collapse;">
             <tbody>
               <tr>
                 <td style = "background-color: white; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">8</td>

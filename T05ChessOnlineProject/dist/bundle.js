@@ -1,4 +1,5 @@
-import { makeMove, current_move } from "./chessLogic.js";
+import { makeMove, current_move, white_flag } from "./chessLogic.js";
+import { getOriginalpos } from "./originalPos.js";
 
 (function () {
     'use strict';
@@ -3629,7 +3630,7 @@ import { makeMove, current_move } from "./chessLogic.js";
         audio.autoplay = true;
     }
 
-    let inGame = false, inMM = false;
+    let inGame = false, inMM = false, name = "";
 
     async function main() {
       const socket = lookup();
@@ -3638,13 +3639,13 @@ import { makeMove, current_move } from "./chessLogic.js";
       socket.on("connect", () => {
         console.log(socket.id); // x8WIv7-mJelg7on_ALbx
         // document.getElementById("whitePlayer").innerText = "White: " + socket.id + " (You)";
-        socket.on("MessageFromServer", function (msg) {
+        socket.on("MessageFromServer", function (msg, white_msg) {
             let res, capture;
             let textDoc = document.getElementById("history");
             let chatHist = document.getElementById("historyChat");
             console.log(msg);
-
-            if (msg.length === 5 && msg[2] == ' ') {
+    
+            if (msg.length === 5 && msg[2] == ' ' && white_msg == white_flag) {
                 let tableCell1 = document.getElementById(msg[0].toUpperCase() + msg[1]);
                 let tableCell2 = document.getElementById(msg[3].toUpperCase() + msg[4]);
                 if (tableCell2 !== null)
@@ -3652,27 +3653,36 @@ import { makeMove, current_move } from "./chessLogic.js";
                         capture = true;
                 res = makeMove(tableCell1, tableCell2);
                 if (res == -1) {
-                    chatHist.value += "\n" + msg;
-                    chatHist.scrollTop = chatHist.scrollHeight;   
+                    if (white_msg) chatHist.value += "\n" + "White: " + msg;
+                    else chatHist.value += "\n" + "Black: " + msg;
+                    chatHist.scrollTop = chatHist.scrollHeight;
                 }
                 else if (res == 0) {
-                    textDoc.value += "\n" + tableCell1.id + " " + tableCell2.id + ": Invalid move!";
+                    if (white_msg) textDoc.value += "\n" + "White: " + tableCell1.id + " " + tableCell2.id + " is an Invalid move!";
+                    else textDoc.value += "\n" + "Black: " + tableCell1.id + " " + tableCell2.id + " is an Invalid move!";
                     errorAudio();
+                    textDoc.scrollTop = textDoc.scrollHeight;
                 }
                 else if (res == 1) {
-                    textDoc.value += "\n" + current_move + ". " + tableCell1.id + " " + tableCell2.id;
+                    if (white_msg) {
+                        textDoc.value += "\n" + current_move + ". " + tableCell1.id + " " + tableCell2.id;
+                        document.getElementById("whoseTurn").innerText = "Black's turn";
+                    }
+                    else {
+                        textDoc.value += " | " + tableCell1.id + " " + tableCell2.id;
+                        document.getElementById("whoseTurn").innerText = "White's turn";
+                    }
+                    textDoc.scrollTop = textDoc.scrollHeight;
                     // Init sounds
                     if (capture) captureAudio();
                     else moveAudio();
                 }
             }
             else {
-                chatHist.value += "\n" + msg;
-                chatHist.scrollTop = chatHist.scrollHeight; 
-            }
-            
-            textDoc.scrollTop = textDoc.scrollHeight;
-            //else return start.id + " " + finish.id + ": " + "Invalid move!";
+                if (white_msg) chatHist.value += "\n" + "White: " + msg;
+                else chatHist.value += "\n" + "Black: " + msg;
+                chatHist.scrollTop = chatHist.scrollHeight;
+            };
         });
       });
 
@@ -3695,6 +3705,8 @@ import { makeMove, current_move } from "./chessLogic.js";
           if (!inMM) socket.emit("mmJoinRequest");
           else socket.emit("mmLeaveRequest");
         }
+        else
+            socket.emit("gameLeaveRequest");
           // document.getElementById("whitePlayer").innerText = `White: ${socket.id} (You)`;
       });
     
@@ -3707,13 +3719,39 @@ import { makeMove, current_move } from "./chessLogic.js";
         inMM = false;
         document.getElementById("joinButton").value = "Join MM queue";
       });
+
+      //socket.on
     
-      socket.on("startGame", (blackID) => {
+      socket.on("startGame", (enemyID, white_flag) => {
         inMM = false;
         inGame = true;
+        name = socket.id;
+        // name = document.getElementById("nameInput").value;
+        // if (name === "") name = "Anonymous";
+        if (white_flag) {
+            document.getElementById("whitePlayer").innerText = `White: ${name} (You)`;
+            document.getElementById("blackPlayer").innerText = `Black: ${enemyID}`;
+        }
+        else {
+            document.getElementById("whitePlayer").innerText = `White: ${enemyID}`;
+            document.getElementById("blackPlayer").innerText = `Black: ${name} (You)`;
+        }
         document.getElementById("joinButton").value = "Leave game";
-        document.getElementById("whitePlayer").innerText = `White: ${socket.id}`;
-        document.getElementById("blackPlayer").innerText = `Black: ${blackID}`;
+        document.getElementById("whoseTurn").innerText = "White's turn";
+        document.getElementById("chessBoard").innerHTML = getOriginalpos();
+        notifyAudio();
+      });
+
+      socket.on("leftGame", () => {
+        inMM = false;
+        inGame = false;
+        document.getElementById("whitePlayer").innerText = `White: Not in a match`;
+        document.getElementById("blackPlayer").innerText = `Black: Not in a match`;
+        document.getElementById("joinButton").value = "Join MM queue";
+        document.getElementById("history").value = "";
+        document.getElementById("historyChat").value = "";
+        document.getElementById("whoseTurn").innerText = "";
+        notifyAudio();
       });
     }
 

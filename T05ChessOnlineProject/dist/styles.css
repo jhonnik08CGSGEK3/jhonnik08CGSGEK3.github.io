@@ -32,6 +32,14 @@ body::before {
     padding: 10px;
 }
 
+#rightForm {
+    float:right;
+    margin: auto;
+    width: 20%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
 #someHeader {
     color: white;
     font-size: 1.5em;
