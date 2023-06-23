@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-client": "./node_modules/.bin/rollup -c --watch",
+    "build-client": " ",
     "start-server": "cd dist && node ../server/server.js"
   },
   "author": "",
