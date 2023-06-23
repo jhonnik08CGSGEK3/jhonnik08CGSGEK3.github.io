@@ -1,7 +1,7 @@
 body {
     position: relative;
     background-size: 100%;
-    background-image: url(bin/Chess3.jpg);
+    background-image: url(bin/Chess7.jpg);
 }
 
 body::before {
@@ -10,7 +10,7 @@ body::before {
     left: 0;
     top: 0;
     position: absolute;
-    z-index: 1;
+    z-index: 0;
 }
 
 /* table {
@@ -27,15 +27,18 @@ body::before {
 #rightTab {
     float:right;
     margin: auto;
+    position: relative;
+    height: 100px;
     width: 30%;
-    border: 3px solid green;
-    padding: 10px;
 }
 
-#rightForm {
+#greenBox {
     float:right;
-    margin: auto;
-    width: 20%;
+    position: absolute;
+    top: 50%;
+    margin-top: 14.5em;
+    font-size: 1.2em;
+    width: 90%;
     border: 3px solid green;
     padding: 10px;
 }
@@ -56,13 +59,16 @@ body::before {
     font-size: 1.5em;
 }
 
+/* table {
+    background-image: url(https://lichess1.org/assets/_HZrvLJ/images/board/svg/brown.svg)
+} */
+
 td {
     border: 1px solid black;
     width: 85px;
     height: 85px;
     font-size: 2.5em;
     text-align: center;
-    background-color: rgb(240, 215, 179);
     position: relative;
     z-index: 2;
 }
@@ -73,15 +79,13 @@ tr {
     z-index: 2;
 }
 
-img {
-    width: 75px;
-}
-
 /* Drag&Drop*/
 .draggable {
     cursor: pointer;
+    width: 75px;
 }
 
-.black-rook {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDM5aDI3di0zSDl2M3ptMy41LTdsMS41LTIuNWgxN2wxLjUgMi41aC0yMHptLS41IDR2LTRoMjF2NEgxMnoiIHN0cm9rZS1saW5lY2FwPSJidXR0Ii8+PHBhdGggZD0iTTE0IDI5LjV2LTEzaDE3djEzSDE0eiIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz48cGF0aCBkPSJNMTQgMTYuNUwxMSAxNGgyM2wtMyAyLjVIMTR6TTExIDE0VjloNHYyaDVWOWg1djJoNVY5aDR2NUgxMXoiIHN0cm9rZS1saW5lY2FwPSJidXR0Ii8+PHBhdGggZD0iTTEyIDM1LjVoMjFtLTIwLTRoMTltLTE4LTJoMTdtLTE3LTEzaDE3TTExIDE0aDIzIiBmaWxsPSJub25lIiBzdHJva2U9IiNlY2VjZWMiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPjwvZz48L3N2Zz4=);
+.check {
+    background: radial-gradient(ellipse at center, rgb(255, 0, 0) 0%, rgb(231, 0, 0) 35%, rgba(169, 0, 0, 0) 70%, rgba(158, 0, 0, 0) 100%);
+    /* background-color: radial-gradient(ellipse at center, rgb(255, 0, 0) 0%, rgb(231, 0, 0) 35%, rgba(169, 0, 0, 0) 70%, rgba(158, 0, 0, 0) 100%); */
 }

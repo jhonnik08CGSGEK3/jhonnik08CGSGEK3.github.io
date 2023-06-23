@@ -47,10 +47,21 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`Client disconnected with id: ${socket.id}`);
     for (let i = 0; i < matches.length; i++) {
-      if (matches[i].whiteSocket == socket || matches[i].blackSocket == socket) {
+      if (matches[i].whiteSocket == socket) {
         matches[i].whiteSocket.emit("leftGame");
+        matches[i].blackSocket.emit("wonGame", "opponentDisconnected");
+        const index = matches.indexOf(matches[i]);
+        // console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
+        if (index > -1) {
+          matches.splice(index, 1);
+        }
+        break;
+      }
+      else if (matches[i].blackSocket == socket) {
+        matches[i].whiteSocket.emit("wonGame", "opponentDisconnected");
         matches[i].blackSocket.emit("leftGame");
         const index = matches.indexOf(matches[i]);
+        // console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
         if (index > -1) {
           matches.splice(index, 1);
         }
@@ -96,11 +107,46 @@ io.on("connection", (socket) => {
 
   socket.on("gameLeaveRequest", () => {
     for (let i = 0; i < matches.length; i++) {
-      if (matches[i].whiteSocket == socket || matches[i].blackSocket == socket) {
+      if (matches[i].whiteSocket == socket) {
         matches[i].whiteSocket.emit("leftGame");
+        matches[i].blackSocket.emit("wonGame", "opponentLeft");
+        const index = matches.indexOf(matches[i]);
+        // console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
+        if (index > -1) {
+          matches.splice(index, 1);
+        }
+        break;
+      }
+      else if (matches[i].blackSocket == socket) {
+        matches[i].whiteSocket.emit("wonGame", "opponentLeft");
         matches[i].blackSocket.emit("leftGame");
         const index = matches.indexOf(matches[i]);
-        console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
+        // console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
+        if (index > -1) {
+          matches.splice(index, 1);
+        }
+        break;
+      }
+    }
+  });
+
+  socket.on("gameWinRequest", () => {
+    for (let i = 0; i < matches.length; i++) {
+      if (matches[i].whiteSocket == socket) {
+        matches[i].whiteSocket.emit("wonGame");
+        matches[i].blackSocket.emit("leftGame");
+        const index = matches.indexOf(matches[i]);
+        // console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
+        if (index > -1) {
+          matches.splice(index, 1);
+        }
+        break;
+      }
+      else if (matches[i].blackSocket == socket) {
+        matches[i].whiteSocket.emit("leftGame");
+        matches[i].blackSocket.emit("wonGame");
+        const index = matches.indexOf(matches[i]);
+        // console.log(`GAME: Client ${socket.id} left his Match (ID: ${matches[i].id})`);
         if (index > -1) {
           matches.splice(index, 1);
         }
